@@ -2,6 +2,7 @@
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,8 +27,9 @@ void main() async {
   //* Show Home screen instead of Onboarding Screen if not the first time using
   final showHomePref = await SharedPreferences.getInstance();
   final showHome = showHomePref.getBool(constants.SHOW_HOME_PREF_KEY) ?? false;
-
-  runApp(StudentGuideApp(showHome));
+  SystemChrome.setPreferredOrientations(
+          [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
+      .then((value) => runApp(StudentGuideApp(showHome)));
 }
 
 class StudentGuideApp extends StatelessWidget {
