@@ -8,6 +8,6 @@ class CustomLoadingIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const CircularProgressIndicator(color: mColor);
+    return const Center(child: CircularProgressIndicator(color: mColor));
   }
 }

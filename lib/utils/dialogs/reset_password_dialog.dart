@@ -21,17 +21,17 @@ showResetPasswordDialog(BuildContext context) {
         content: Form(
           key: form,
           child: CustomTextFormField(
-            hintText: 'Email',
+            hint: 'Email',
             prefixIcon: const Icon(
               Icons.email,
               color: Colors.black38,
             ),
-            textInputType: TextInputType.emailAddress,
-            textController: email,
+            inputType: TextInputType.emailAddress,
+            controller: email,
             validator: (value) {
               RegExp regex = RegExp(r'\w+@\w+\.\w+');
               if (value!.isEmpty) {
-                return 'Please Enter Your Email';
+                return 'Please enter your email';
               }
               return regex.hasMatch(value) ? null : 'Invalid Email';
             },
@@ -70,8 +70,7 @@ showResetPasswordDialog(BuildContext context) {
                 : ElevatedButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(mColor),
-                      foregroundColor:
-                          MaterialStateProperty.all<Color>(Colors.white),
+                      foregroundColor: MaterialStateProperty.all<Color>(white),
                       shape: MaterialStateProperty.all(
                         RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20)),
@@ -94,8 +93,8 @@ showResetPasswordDialog(BuildContext context) {
           ),
           ElevatedButton(
               style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.grey),
+                foregroundColor: MaterialStateProperty.all<Color>(white),
+                backgroundColor: MaterialStateProperty.all<Color>(grey),
                 shape: MaterialStateProperty.all(RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20))),
               ),

@@ -26,6 +26,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/jobs.jpg
   AssetGenImage get jobs => const AssetGenImage('assets/images/jobs.jpg');
 
+  /// File path: assets/images/location_icon.png
+  AssetGenImage get locationIcon =>
+      const AssetGenImage('assets/images/location_icon.png');
+
   /// File path: assets/images/onboarding1.png
   AssetGenImage get onboarding1 =>
       const AssetGenImage('assets/images/onboarding1.png');
@@ -59,6 +63,7 @@ class $AssetsImagesGen {
         education,
         icon,
         jobs,
+        locationIcon,
         onboarding1,
         onboarding2,
         onboarding3,

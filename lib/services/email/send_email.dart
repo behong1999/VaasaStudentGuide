@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:students_guide/utils/constants.dart' as constants;
 
@@ -9,7 +8,7 @@ Future sendEmail({
   required String content,
 }) async {
   final url = Uri.parse(constants.sendEmailUrl);
-  final response = await http.post(
+  await http.post(
     url,
     headers: {'Content-Type': 'application/json'},
     body: json.encode(
@@ -26,5 +25,4 @@ Future sendEmail({
       },
     ),
   );
-  log(response.body);
 }

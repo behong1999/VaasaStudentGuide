@@ -1,62 +1,85 @@
 import 'package:flutter/material.dart';
+
 import 'package:students_guide/utils/custom/c_theme_data.dart';
 
 class CustomTextFormField extends StatelessWidget {
-  @override
+  final TextEditingController controller;
   String? Function(String?)? validator;
-  final TextEditingController textController;
+  String? hint;
+  String? label;
+  bool? obscure;
+  double? radius;
+  int? maxLines = 1;
+  TextInputType? inputType;
   Widget? suffixIcon;
   Widget? prefixIcon;
-  bool? obscureText;
-  TextInputType? textInputType;
-  String? hintText;
 
   CustomTextFormField({
     Key? key,
+    required this.controller,
+    this.radius,
+    this.maxLines,
     this.validator,
-    required this.textController,
     this.suffixIcon,
     this.prefixIcon,
-    this.obscureText,
-    this.hintText,
-    this.textInputType,
+    this.obscure,
+    this.inputType,
+    this.hint,
+    this.label,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    bool isLight = checkIfLightTheme(context);
+
+    double radius = this.radius ?? 10;
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(radius)),
         boxShadow: [
           BoxShadow(
             color: Colors.black26,
-            blurRadius: 10.0,
+            blurRadius: radius,
             spreadRadius: 0.1,
-            offset: Offset(2, 6),
+            offset: const Offset(2, 1),
           ),
         ],
       ),
       child: TextFormField(
-        controller: textController,
+        controller: controller,
         cursorColor: mColor,
-        keyboardType: textInputType,
-        obscureText: obscureText ?? false,
+        keyboardType: inputType,
+        maxLines: maxLines ?? 1,
+        obscureText: obscure ?? false,
+        enableInteractiveSelection: true,
         validator: validator,
+        style: const TextStyle(color: Colors.black),
         decoration: InputDecoration(
-          contentPadding: const EdgeInsets.all(10),
+          contentPadding: EdgeInsets.all(radius),
           filled: true,
-          fillColor: Colors.white,
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black12),
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+          fillColor: isLight ? white : gray,
+          enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.black12),
+            borderRadius: BorderRadius.all(Radius.circular(radius)),
           ),
-          focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: mColor),
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: mColor),
+            borderRadius: BorderRadius.all(Radius.circular(radius)),
           ),
-          hintText: hintText,
+          hintText: hint,
           hintStyle: const TextStyle(color: Colors.black38),
+          labelText: label,
+          floatingLabelStyle: TextStyle(
+              color: mColor,
+              fontWeight: FontWeight.bold,
+              backgroundColor: isLight ? lBackgroundColor : dBackgroundColor),
+          labelStyle:
+              TextStyle(color: isLight ? Colors.black38 : Colors.white54),
           prefixIcon: prefixIcon,
+          prefixIconColor: white,
           suffixIcon: suffixIcon,
+          suffixIconColor: white,
+          alignLabelWithHint: true,
         ),
       ),
     );

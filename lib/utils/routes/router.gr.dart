@@ -11,150 +11,163 @@
 // ignore_for_file: type=lint
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i7;
-import 'package:flutter/material.dart' as _i8;
-import 'package:students_guide/models/category_model.dart' as _i9;
-import 'package:students_guide/views/pages/articles/add_edit_page.dart' as _i6;
-import 'package:students_guide/views/pages/articles/articles_page.dart' as _i5;
-import 'package:students_guide/views/pages/contact_page.dart' as _i3;
-import 'package:students_guide/views/pages/home_page.dart' as _i2;
-import 'package:students_guide/views/pages/login_page.dart' as _i4;
-import 'package:students_guide/views/pages/onboarding_page.dart' as _i1;
+import 'package:auto_route/auto_route.dart' as _i9;
+import 'package:flutter/material.dart' as _i10;
+import 'package:students_guide/models/article_model.dart' as _i12;
+import 'package:students_guide/models/category_model.dart' as _i11;
+import 'package:students_guide/views/pages/articles/add_edit_view.dart' as _i6;
+import 'package:students_guide/views/pages/articles/article_details_view.dart'
+    as _i4;
+import 'package:students_guide/views/pages/articles/articles_view.dart' as _i3;
+import 'package:students_guide/views/pages/contact/contact_view.dart' as _i7;
+import 'package:students_guide/views/pages/home/home_view.dart' as _i2;
+import 'package:students_guide/views/pages/login/login_view.dart' as _i5;
+import 'package:students_guide/views/pages/onboarding/onboarding_view.dart'
+    as _i1;
+import 'package:students_guide/views/pages/stars/stars_view.dart' as _i8;
 
-class AppRouter extends _i7.RootStackRouter {
-  AppRouter([_i8.GlobalKey<_i8.NavigatorState>? navigatorKey])
+class AppRouter extends _i9.RootStackRouter {
+  AppRouter([_i10.GlobalKey<_i10.NavigatorState>? navigatorKey])
       : super(navigatorKey);
 
   @override
-  final Map<String, _i7.PageFactory> pagesMap = {
+  final Map<String, _i9.PageFactory> pagesMap = {
     OnboardingRoute.name: (routeData) {
-      return _i7.AdaptivePage<dynamic>(
+      return _i9.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: const _i1.OnboardingPage(),
+        child: const _i1.OnboardingView(),
       );
     },
     HomeRoute.name: (routeData) {
-      return _i7.AdaptivePage<dynamic>(
+      return _i9.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: const _i2.HomePage(),
-      );
-    },
-    ContactRoute.name: (routeData) {
-      return _i7.AdaptivePage<dynamic>(
-        routeData: routeData,
-        child: const _i3.ContactPage(),
-      );
-    },
-    LoginRoute.name: (routeData) {
-      return _i7.AdaptivePage<dynamic>(
-        routeData: routeData,
-        child: const _i4.LoginPage(),
+        child: const _i2.HomeView(),
       );
     },
     ArticlesRoute.name: (routeData) {
       final args = routeData.argsAs<ArticlesRouteArgs>();
-      return _i7.AdaptivePage<dynamic>(
+      return _i9.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: _i5.ArticlesPage(
+        child: _i3.ArticlesView(
           args.categoryModel,
           key: args.key,
         ),
       );
     },
-    AddEditRoute.name: (routeData) {
-      return _i7.AdaptivePage<dynamic>(
+    ArticleDetailsRoute.name: (routeData) {
+      final args = routeData.argsAs<ArticleDetailsRouteArgs>();
+      return _i9.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: const _i6.AddEditPage(),
+        child: _i4.ArticleDetailsView(
+          key: args.key,
+          article: args.article,
+          isStarred: args.isStarred,
+          isLoggedIn: args.isLoggedIn,
+        ),
+      );
+    },
+    LoginRoute.name: (routeData) {
+      return _i9.AdaptivePage<dynamic>(
+        routeData: routeData,
+        child: const _i5.LoginView(),
+      );
+    },
+    AddEditRoute.name: (routeData) {
+      final args = routeData.argsAs<AddEditRouteArgs>(
+          orElse: () => const AddEditRouteArgs());
+      return _i9.AdaptivePage<dynamic>(
+        routeData: routeData,
+        child: _i6.AddEditView(
+          key: args.key,
+          category: args.category,
+          article: args.article,
+        ),
+      );
+    },
+    ContactRoute.name: (routeData) {
+      return _i9.AdaptivePage<dynamic>(
+        routeData: routeData,
+        child: const _i7.ContactView(),
+      );
+    },
+    StarsRoute.name: (routeData) {
+      return _i9.AdaptivePage<dynamic>(
+        routeData: routeData,
+        child: const _i8.StarsView(),
       );
     },
   };
 
   @override
-  List<_i7.RouteConfig> get routes => [
-        _i7.RouteConfig(
+  List<_i9.RouteConfig> get routes => [
+        _i9.RouteConfig(
           OnboardingRoute.name,
-          path: '/onboarding-page',
+          path: '/onboarding-view',
         ),
-        _i7.RouteConfig(
+        _i9.RouteConfig(
           HomeRoute.name,
-          path: '/home-page',
+          path: '/home-view',
         ),
-        _i7.RouteConfig(
-          ContactRoute.name,
-          path: '/contact-page',
-        ),
-        _i7.RouteConfig(
-          LoginRoute.name,
-          path: '/login-page',
-        ),
-        _i7.RouteConfig(
+        _i9.RouteConfig(
           ArticlesRoute.name,
-          path: '/articles-page',
+          path: '/articles-view',
         ),
-        _i7.RouteConfig(
+        _i9.RouteConfig(
+          ArticleDetailsRoute.name,
+          path: '/article-details-view',
+        ),
+        _i9.RouteConfig(
+          LoginRoute.name,
+          path: '/login-view',
+        ),
+        _i9.RouteConfig(
           AddEditRoute.name,
-          path: '/add-edit-page',
+          path: '/add-edit-view',
+        ),
+        _i9.RouteConfig(
+          ContactRoute.name,
+          path: '/contact-view',
+        ),
+        _i9.RouteConfig(
+          StarsRoute.name,
+          path: '/stars-view',
         ),
       ];
 }
 
 /// generated route for
-/// [_i1.OnboardingPage]
-class OnboardingRoute extends _i7.PageRouteInfo<void> {
+/// [_i1.OnboardingView]
+class OnboardingRoute extends _i9.PageRouteInfo<void> {
   const OnboardingRoute()
       : super(
           OnboardingRoute.name,
-          path: '/onboarding-page',
+          path: '/onboarding-view',
         );
 
   static const String name = 'OnboardingRoute';
 }
 
 /// generated route for
-/// [_i2.HomePage]
-class HomeRoute extends _i7.PageRouteInfo<void> {
+/// [_i2.HomeView]
+class HomeRoute extends _i9.PageRouteInfo<void> {
   const HomeRoute()
       : super(
           HomeRoute.name,
-          path: '/home-page',
+          path: '/home-view',
         );
 
   static const String name = 'HomeRoute';
 }
 
 /// generated route for
-/// [_i3.ContactPage]
-class ContactRoute extends _i7.PageRouteInfo<void> {
-  const ContactRoute()
-      : super(
-          ContactRoute.name,
-          path: '/contact-page',
-        );
-
-  static const String name = 'ContactRoute';
-}
-
-/// generated route for
-/// [_i4.LoginPage]
-class LoginRoute extends _i7.PageRouteInfo<void> {
-  const LoginRoute()
-      : super(
-          LoginRoute.name,
-          path: '/login-page',
-        );
-
-  static const String name = 'LoginRoute';
-}
-
-/// generated route for
-/// [_i5.ArticlesPage]
-class ArticlesRoute extends _i7.PageRouteInfo<ArticlesRouteArgs> {
+/// [_i3.ArticlesView]
+class ArticlesRoute extends _i9.PageRouteInfo<ArticlesRouteArgs> {
   ArticlesRoute({
-    required _i9.CategoryModel categoryModel,
-    _i8.Key? key,
+    required _i11.CategoryModel categoryModel,
+    _i10.Key? key,
   }) : super(
           ArticlesRoute.name,
-          path: '/articles-page',
+          path: '/articles-view',
           args: ArticlesRouteArgs(
             categoryModel: categoryModel,
             key: key,
@@ -170,9 +183,9 @@ class ArticlesRouteArgs {
     this.key,
   });
 
-  final _i9.CategoryModel categoryModel;
+  final _i11.CategoryModel categoryModel;
 
-  final _i8.Key? key;
+  final _i10.Key? key;
 
   @override
   String toString() {
@@ -181,13 +194,120 @@ class ArticlesRouteArgs {
 }
 
 /// generated route for
-/// [_i6.AddEditPage]
-class AddEditRoute extends _i7.PageRouteInfo<void> {
-  const AddEditRoute()
+/// [_i4.ArticleDetailsView]
+class ArticleDetailsRoute extends _i9.PageRouteInfo<ArticleDetailsRouteArgs> {
+  ArticleDetailsRoute({
+    _i10.Key? key,
+    required _i12.ArticleModel article,
+    required bool isStarred,
+    required bool isLoggedIn,
+  }) : super(
+          ArticleDetailsRoute.name,
+          path: '/article-details-view',
+          args: ArticleDetailsRouteArgs(
+            key: key,
+            article: article,
+            isStarred: isStarred,
+            isLoggedIn: isLoggedIn,
+          ),
+        );
+
+  static const String name = 'ArticleDetailsRoute';
+}
+
+class ArticleDetailsRouteArgs {
+  const ArticleDetailsRouteArgs({
+    this.key,
+    required this.article,
+    required this.isStarred,
+    required this.isLoggedIn,
+  });
+
+  final _i10.Key? key;
+
+  final _i12.ArticleModel article;
+
+  final bool isStarred;
+
+  final bool isLoggedIn;
+
+  @override
+  String toString() {
+    return 'ArticleDetailsRouteArgs{key: $key, article: $article, isStarred: $isStarred, isLoggedIn: $isLoggedIn}';
+  }
+}
+
+/// generated route for
+/// [_i5.LoginView]
+class LoginRoute extends _i9.PageRouteInfo<void> {
+  const LoginRoute()
       : super(
+          LoginRoute.name,
+          path: '/login-view',
+        );
+
+  static const String name = 'LoginRoute';
+}
+
+/// generated route for
+/// [_i6.AddEditView]
+class AddEditRoute extends _i9.PageRouteInfo<AddEditRouteArgs> {
+  AddEditRoute({
+    _i10.Key? key,
+    String? category,
+    _i12.ArticleModel? article,
+  }) : super(
           AddEditRoute.name,
-          path: '/add-edit-page',
+          path: '/add-edit-view',
+          args: AddEditRouteArgs(
+            key: key,
+            category: category,
+            article: article,
+          ),
         );
 
   static const String name = 'AddEditRoute';
+}
+
+class AddEditRouteArgs {
+  const AddEditRouteArgs({
+    this.key,
+    this.category,
+    this.article,
+  });
+
+  final _i10.Key? key;
+
+  final String? category;
+
+  final _i12.ArticleModel? article;
+
+  @override
+  String toString() {
+    return 'AddEditRouteArgs{key: $key, category: $category, article: $article}';
+  }
+}
+
+/// generated route for
+/// [_i7.ContactView]
+class ContactRoute extends _i9.PageRouteInfo<void> {
+  const ContactRoute()
+      : super(
+          ContactRoute.name,
+          path: '/contact-view',
+        );
+
+  static const String name = 'ContactRoute';
+}
+
+/// generated route for
+/// [_i8.StarsView]
+class StarsRoute extends _i9.PageRouteInfo<void> {
+  const StarsRoute()
+      : super(
+          StarsRoute.name,
+          path: '/stars-view',
+        );
+
+  static const String name = 'StarsRoute';
 }

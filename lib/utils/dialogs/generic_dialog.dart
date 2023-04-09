@@ -21,8 +21,8 @@ Future<T?> showGenericDialog<T>({
           return ElevatedButton(
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(
-                    value != null ? mColor : Colors.grey),
-                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                    value != null ? mColor : grey),
+                foregroundColor: MaterialStateProperty.all<Color>(white),
                 shape: MaterialStateProperty.all(
                   RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
