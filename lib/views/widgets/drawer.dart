@@ -14,7 +14,7 @@ import 'package:students_guide/utils/custom/c_theme_data.dart';
 import 'package:students_guide/utils/custom/c_icons.dart';
 import 'package:students_guide/views/widgets/drawer_item.dart';
 
-class DrawerMenu extends StatelessWidget {
+class DrawerMenu extends StatefulWidget {
   const DrawerMenu({
     Key? key,
     required this.isLoggedIn,
@@ -22,6 +22,11 @@ class DrawerMenu extends StatelessWidget {
 
   final bool isLoggedIn;
 
+  @override
+  State<DrawerMenu> createState() => _DrawerMenuState();
+}
+
+class _DrawerMenuState extends State<DrawerMenu> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ThemeCubit, ThemeState>(
@@ -46,25 +51,25 @@ class DrawerMenu extends StatelessWidget {
                             children: [
                               CircleAvatar(
                                 radius: 40,
-                                backgroundColor: Colors.white,
+                                backgroundColor: white,
                                 child: Icon(
-                                  isLoggedIn
+                                  widget.isLoggedIn
                                       ? FontAwesomeIcons.userShield
                                       : Icons.person,
                                   size: 40,
-                                  color: Colors.black,
+                                  color: black,
                                 ),
                               ),
                               const SizedBox(height: 10),
                               Text(
-                                isLoggedIn ? 'Admin' : 'Free User',
+                                widget.isLoggedIn ? 'Admin' : 'Free User',
                                 style: const TextStyle(
                                   fontSize: 22,
-                                  color: Colors.white,
+                                  color: white,
                                 ),
                               ),
                               const SizedBox(height: 10),
-                              if (isLoggedIn)
+                              if (widget.isLoggedIn)
                                 Text(FirebaseAuth.instance.currentUser!.email
                                     .toString())
                             ],
@@ -77,18 +82,20 @@ class DrawerMenu extends StatelessWidget {
                       title: const DrawerText('Home'),
                       onTap: () => pushAndPopUntil(context, const HomeRoute()),
                     ),
-                    if (isLoggedIn)
+                    if (widget.isLoggedIn)
                       DrawerItem(
                         icon: Icons.edit,
                         title: const DrawerText('Add'),
-                        onTap: () => context.router.push(const AddEditRoute()),
+                        onTap: () => context.router.push(AddEditRoute()),
                       )
                     else
                       ...([
-                        const DrawerItem(
+                        DrawerItem(
                           icon: Icons.star,
-                          title: DrawerText('Starred'),
-                          // onTap: () {Navigator.of(context).pushNamed();},
+                          title: const DrawerText('Stars'),
+                          onTap: () async {
+                            pushAndPopUntil(context, const StarsRoute());
+                          },
                         ),
                         DrawerItem(
                           icon: CustomIcons.contact,
@@ -142,7 +149,7 @@ class DrawerMenu extends StatelessWidget {
               Column(
                 children: [
                   const Divider(),
-                  isLoggedIn
+                  widget.isLoggedIn
                       ? DrawerItem(
                           icon: Icons.logout_outlined,
                           title: const DrawerText('Sign Out'),
