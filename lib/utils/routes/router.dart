@@ -1,4 +1,4 @@
-import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:students_guide/views/pages/articles/add_edit_view.dart';
 import 'package:students_guide/views/pages/articles/article_details_view.dart';
 import 'package:students_guide/views/pages/articles/articles_view.dart';

@@ -24,7 +24,8 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^8.1.1
   flutter_google_places: ^0.3.0
-  flutter_launcher_icons: ^0.11.0
+  flutter_launcher_icons: ^0.13.0
+  flutter_native_splash: ^2.2.19
   flutter_platform_widgets: ^3.0.0
   flutter_polyline_points: ^1.0.0
   font_awesome_flutter: ^10.4.0
@@ -49,6 +50,17 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/images/icon.png"
+
+flutter_native_splash:
+  image: "assets/images/icon.png"
+  color: "#F9A826"
+  color_dark: "#2F2E41"
 
 flutter:
   assets:

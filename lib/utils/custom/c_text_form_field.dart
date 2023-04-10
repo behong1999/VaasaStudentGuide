@@ -53,7 +53,7 @@ class CustomTextFormField extends StatelessWidget {
         obscureText: obscure ?? false,
         enableInteractiveSelection: true,
         validator: validator,
-        style: const TextStyle(color: Colors.black),
+        style: TextStyle(color: isLight ? Colors.black38 : Colors.white54),
         decoration: InputDecoration(
           contentPadding: EdgeInsets.all(radius),
           filled: true,
@@ -67,7 +67,7 @@ class CustomTextFormField extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(radius)),
           ),
           hintText: hint,
-          hintStyle: const TextStyle(color: Colors.black38),
+          // hintStyle: const TextStyle(colo r: Colors.black38),
           labelText: label,
           floatingLabelStyle: TextStyle(
               color: mColor,

@@ -53,7 +53,8 @@ ThemeData lightTheme(BuildContext context) {
 bool checkIfLightTheme(BuildContext context) {
   //*Check if the device is in light mode when choosing System theme option
   if (MediaQuery.of(context).platformBrightness == Brightness.light &&
-      BlocProvider.of<ThemeCubit>(context).state.themeMode == ThemeMode.light) {
+      BlocProvider.of<ThemeCubit>(context).state.themeMode ==
+          ThemeMode.system) {
     return true;
   }
   //* Or when Light theme option has been chosen
