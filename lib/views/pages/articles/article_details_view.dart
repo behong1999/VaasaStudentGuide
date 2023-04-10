@@ -252,14 +252,20 @@ class _ArticleDetailsViewState extends State<ArticleDetailsView> {
                 content: intro,
                 style: contentStyle,
               ),
+
               SizedBox(height: hBetween),
 
               //* DETAILED INFORMATION
               DetailsContainer(
-                  title: 'Detailed Information',
-                  content: info,
-                  style: contentStyle),
-              SizedBox(height: hBetween * 3),
+                title: 'Detailed Information',
+                content: info,
+                style: contentStyle,
+              ),
+
+              Visibility(
+                visible: address.isNotEmpty,
+                child: SizedBox(height: hBetween * 3),
+              ),
 
               //* ADDRESS
               DetailsText(
@@ -267,13 +273,22 @@ class _ArticleDetailsViewState extends State<ArticleDetailsView> {
                 content: address,
                 style: contentStyle,
               ),
-              SizedBox(height: hBetween * 3),
+
+              Visibility(
+                visible: address.isNotEmpty,
+                child: SizedBox(height: hBetween * 2),
+              ),
+
               //* MAP
               Visibility(
                 visible: address.isNotEmpty,
                 child: MapView(address: address),
               ),
-              SizedBox(height: hBetween),
+
+              Visibility(
+                visible: email.isNotEmpty,
+                child: SizedBox(height: hBetween),
+              ),
 
               //* EMAIL
               DetailsText(
@@ -293,7 +308,11 @@ class _ArticleDetailsViewState extends State<ArticleDetailsView> {
                     },
                     icon: const Icon(Icons.copy, size: 16)),
               ),
-              SizedBox(height: hBetween),
+
+              Visibility(
+                visible: tel.isNotEmpty,
+                child: SizedBox(height: hBetween),
+              ),
 
               //* TELEPHONE
               DetailsText(
@@ -302,7 +321,11 @@ class _ArticleDetailsViewState extends State<ArticleDetailsView> {
                 style: contentStyle,
                 onTap: () => launcher(tel, telField),
               ),
-              SizedBox(height: hBetween * 3),
+
+              Visibility(
+                visible: website.isNotEmpty,
+                child: SizedBox(height: hBetween * 3),
+              ),
 
               //* WEBSITE LINK
               DetailsText(
