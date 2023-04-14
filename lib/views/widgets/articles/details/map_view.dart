@@ -134,6 +134,7 @@ class MapViewState extends State<MapView> {
       width: 3,
       points: polylineCoordinates,
     );
+
     polylines.add(polyline);
 
     //NOTE: Currently not working due to the billing issue

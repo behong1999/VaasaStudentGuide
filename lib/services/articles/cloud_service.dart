@@ -35,15 +35,11 @@ class CloudService {
     }
   }
 
-  Stream<Iterable<ArticleModel>> getAllArticles() {
+  deleteArticle(String id) async {
     try {
-      return _collection.snapshots().map(
-            (event) => event.docs.map(
-              (doc) => ArticleModel.fromSnapshot(doc),
-            ),
-          );
+      await _collection.doc(id).delete();
     } catch (e) {
-      throw CannotGetAllArticles();
+      throw CannotDeleteArticle();
     }
   }
 
@@ -54,20 +50,22 @@ class CloudService {
           .where(categoryField, isEqualTo: category)
           .snapshots()
           .map(
-            (event) => event.docs.map(
-              (doc) => ArticleModel.fromSnapshot(doc),
-            ),
+            (event) => event.docs.map((doc) => ArticleModel.fromSnapshot(doc)),
           );
     } catch (e) {
       throw CannotGetAllArticles();
     }
   }
 
-  deleteArticle(String id) async {
+  Stream<Iterable<ArticleModel>> getAllArticles() {
     try {
-      await _collection.doc(id).delete();
+      return _collection.snapshots().map(
+            (event) => event.docs.map(
+              (doc) => ArticleModel.fromSnapshot(doc),
+            ),
+          );
     } catch (e) {
-      throw CannotDeleteArticle();
+      throw CannotGetAllArticles();
     }
   }
 }

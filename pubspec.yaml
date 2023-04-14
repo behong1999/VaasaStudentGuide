@@ -9,39 +9,39 @@ environment:
   sdk: ">=2.18.1 <3.0.0"
 
 dependencies:
-  auto_route: ^5.0.4
-  auto_size_text: ^3.0.0
-  bloc: ^8.1.0
-  cached_network_image: ^3.2.3
+  path: ^1.8.2
+  http: ^0.13.5
   cloud_firestore: ^4.2.0
-  connectivity_plus: ^3.0.3
-  cupertino_icons: ^1.0.2
-  enum_to_string: ^2.0.1
-  equatable: ^2.0.5
-  firebase_auth: ^4.2.0
   firebase_core: ^2.4.0
+  firebase_auth: ^4.2.0
+  google_maps_flutter: ^2.2.5
+  flutter_google_places: ^0.3.0
+  geolocator: ^9.0.2
+  geocoding: ^2.1.0
+  permission_handler: ^10.2.0
+  flutter_bloc: ^8.1.1
+  bloc: ^8.1.0
+  equatable: ^2.0.5
+  url_launcher: ^6.1.10
   flutter:
     sdk: flutter
-  flutter_bloc: ^8.1.1
-  flutter_google_places: ^0.3.0
+  auto_route: ^5.0.4
+  auto_size_text: ^3.0.0
+  cached_network_image: ^3.2.3
+  cupertino_icons: ^1.0.2
+  enum_to_string: ^2.0.1
   flutter_launcher_icons: ^0.13.0
   flutter_native_splash: ^2.2.19
   flutter_platform_widgets: ^3.0.0
-  flutter_polyline_points: ^1.0.0
   font_awesome_flutter: ^10.4.0
-  geocoding: ^2.1.0
-  geolocator: ^9.0.2
   google_fonts: ^3.0.1
-  google_maps_flutter: ^2.2.5
-  http: ^0.13.5
-  internet_connection_checker: ^1.0.0+1
   intl: ^0.17.0
-  path: ^1.8.2
-  permission_handler: ^10.2.0
   shared_preferences: ^2.0.15
   smooth_page_indicator: ^1.0.1
   sqflite: ^2.2.2
-  url_launcher: ^6.1.10
+  # internet_connection_checker: ^1.0.0+1
+  # connectivity_plus: ^3.0.3
+  # flutter_polyline_points: ^1.0.0
 
 dev_dependencies:
   auto_route_generator: null
@@ -58,7 +58,7 @@ flutter_icons:
   image_path: "assets/images/icon.png"
 
 flutter_native_splash:
-  image: "assets/images/icon.png"
+  image: "assets/images/splash_icon.png"
   color: "#F9A826"
   color_dark: "#2F2E41"
 
