@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:students_guide/models/article_model.dart';
 import 'package:students_guide/services/articles/cloud_service.dart';
@@ -9,6 +10,7 @@ import 'package:students_guide/utils/custom/c_elevated_button.dart';
 import 'package:students_guide/utils/custom/c_loading_icon.dart';
 import 'package:students_guide/utils/custom/c_text.dart';
 import 'package:students_guide/utils/custom/c_theme_data.dart';
+import 'package:students_guide/utils/routes/router.gr.dart';
 import 'package:students_guide/views/widgets/articles/stars/star_card.dart';
 import 'package:students_guide/views/widgets/articles/view_all/search_bar.dart';
 import 'package:students_guide/views/widgets/drawer.dart';
@@ -163,9 +165,41 @@ class _StarsViewState extends State<StarsView> {
                       child: ListView.builder(
                         itemCount: results.length,
                         itemBuilder: (context, index) {
-                          return StarCard(
-                            articleModel: results.elementAt(index),
-                          );
+                          final id =
+                              results.elementAt(index).documentId.toString();
+                          return Dismissible(
+                              key: Key(id),
+                              direction: DismissDirection.endToStart,
+                              onDismissed: (direction) {
+                                _starsService.deleteStar(id);
+                                setState(() {});
+                              },
+                              background: Container(
+                                color: Colors.red,
+                                alignment: Alignment.centerRight,
+                                child: const Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 10),
+                                  child: Icon(
+                                    Icons.delete,
+                                    color: Colors.white,
+                                    size: 30,
+                                  ),
+                                ),
+                              ),
+                              child: StarCard(
+                                onTap: () async {
+                                  bool result = await AutoRouter.of(context)
+                                      .push(ArticleDetailsRoute(
+                                    article: results.elementAt(index),
+                                    isStarred: true,
+                                    isLoggedIn: false,
+                                  )) as bool;
+                                  if (result) {
+                                    setState(() {});
+                                  }
+                                },
+                                articleModel: results.elementAt(index),
+                              ));
                         },
                       ),
                     );

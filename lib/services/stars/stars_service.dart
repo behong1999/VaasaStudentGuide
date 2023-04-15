@@ -48,7 +48,7 @@ class StarsService {
   Future<Iterable<ArticleModel>?> getStars() async {
     await init();
     return _db
-        ?.query(TABLE)
+        ?.query(TABLE, orderBy: '$dateField DESC')
         .then((value) => value.map((e) => ArticleModel.fromMap(e)));
   }
 
