@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:students_guide/models/article_model.dart';
+import 'package:students_guide/services/articles/cloud_service.dart';
 import 'package:students_guide/services/stars/stars_service.dart';
 import 'package:students_guide/utils/custom/c_app_bar.dart';
 import 'package:students_guide/utils/custom/c_elevated_button.dart';
@@ -11,6 +14,7 @@ import 'package:students_guide/views/widgets/articles/view_all/search_bar.dart';
 import 'package:students_guide/views/widgets/drawer.dart';
 
 final StarsService _starsService = StarsService();
+final CloudService _cloudService = CloudService();
 
 class StarsView extends StatefulWidget {
   const StarsView({Key? key}) : super(key: key);
@@ -21,14 +25,21 @@ class StarsView extends StatefulWidget {
 
 class _StarsViewState extends State<StarsView> {
   late final TextEditingController _search;
-  Iterable<ArticleModel> articles = [];
-
+  late final Stream<Iterable<ArticleModel>> stream;
+  late final StreamSubscription<Iterable<ArticleModel>> subscription;
+  Iterable<ArticleModel> results = [];
   String keyword = '';
+
+  streamListener() {
+    subscription = stream.listen((_) => _starsService.updateStars(stream));
+  }
 
   @override
   initState() {
     _search = TextEditingController();
     _starsService.init();
+    stream = _cloudService.getAllArticles();
+    streamListener();
     super.initState();
   }
 
@@ -36,6 +47,7 @@ class _StarsViewState extends State<StarsView> {
   dispose() {
     _search.dispose();
     _starsService.close();
+    subscription.cancel();
     super.dispose();
   }
 
@@ -46,7 +58,7 @@ class _StarsViewState extends State<StarsView> {
         actions: [
           IconButton(
               onPressed: () async {
-                await _starsService.getStars();
+                _starsService.getStars();
                 setState(() {});
               },
               icon: const Icon(Icons.refresh, color: mColor)),
@@ -77,7 +89,7 @@ class _StarsViewState extends State<StarsView> {
                               child: Icon(Icons.refresh, size: 14),
                             ),
                             TextSpan(
-                              text: " to get the latest list.",
+                              text: " to get the latest updated list.",
                             ),
                           ]))
                         ],
@@ -124,20 +136,17 @@ class _StarsViewState extends State<StarsView> {
                     ),
             ),
             const SizedBox(height: 15),
-            FutureBuilder<Iterable<ArticleModel>>(
-                future: _starsService.getStars(),
+            StreamBuilder<Iterable<ArticleModel>>(
+                stream: _starsService.starsStream(),
                 builder: (context, snapshot) {
-                  Iterable<ArticleModel> results = [];
                   if (snapshot.connectionState == ConnectionState.done) {
                     if (snapshot.hasData) {
-                      articles = snapshot.data!;
-                    }
-
-                    results = articles;
-
-                    if (snapshot.data!.isEmpty) {
-                      return const Center(
-                          child: Text('You have no starred articles yet.'));
+                      if (snapshot.data!.isEmpty) {
+                        return const Center(
+                            child: Text('You have no starred articles yet.'));
+                      } else {
+                        results = snapshot.data!;
+                      }
                     }
 
                     if (keyword.isNotEmpty) {

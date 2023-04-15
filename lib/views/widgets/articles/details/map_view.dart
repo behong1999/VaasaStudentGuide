@@ -16,7 +16,7 @@ import 'package:students_guide/utils/custom/c_text.dart';
 import 'package:students_guide/utils/custom/c_theme_data.dart';
 import 'package:students_guide/utils/dialogs/location_permission_dialog.dart';
 import 'package:students_guide/utils/extensions/string_extension.dart';
-import 'package:students_guide/utils/url_launcher.dart';
+import 'package:students_guide/services/url_launcher.dart';
 
 class MapView extends StatefulWidget {
   final String address;

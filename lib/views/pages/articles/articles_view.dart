@@ -38,7 +38,9 @@ class _ArticlesViewState extends State<ArticlesView> {
 
   //* Update Stars' data when an article is updated on Firebase
   streamListener() {
-    subscription = stream.listen((_) => _starsService.updateStars(stream));
+    subscription = stream.listen((_) {
+      _starsService.updateStars(stream);
+    });
   }
 
   @override

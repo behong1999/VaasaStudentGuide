@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:students_guide/utils/url_launcher.dart';
+import 'package:students_guide/services/url_launcher.dart';
 import 'package:students_guide/views/widgets/articles/details/map_view.dart';
 
 import 'package:students_guide/models/article_model.dart';

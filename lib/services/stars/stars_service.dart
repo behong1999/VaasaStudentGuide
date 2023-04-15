@@ -14,9 +14,7 @@ class StarsService {
 
   StarsService._sharedInstance();
 
-  static Database? _db;
-
-  late Iterable<ArticleModel> _stars = [];
+  Database? _db;
 
   init() async {
     String path = join(await getDatabasesPath(), DB_NAME);
@@ -47,25 +45,35 @@ class StarsService {
     return await _db?.insert(TABLE, articleModel.toMap());
   }
 
-  Future<Iterable<ArticleModel>> getStars() async {
+  Future<Iterable<ArticleModel>?> getStars() async {
     await init();
-    final db = _db;
-    final results = (await db!.query(TABLE));
-    return _stars =
-        results.isNotEmpty ? results.map((e) => ArticleModel.fromMap(e)) : [];
+    return _db
+        ?.query(TABLE)
+        .then((value) => value.map((e) => ArticleModel.fromMap(e)));
   }
 
-  updateStars(Stream<Iterable<ArticleModel>> articleModel) {
-    return articleModel.map((articles) => articles.map(
-          (e) => _db?.update(TABLE, e.toMap(),
-              where: '$documentIdField = ?', whereArgs: [e.documentId]),
-        ));
+  Stream<Iterable<ArticleModel>> starsStream() {
+    return Stream.fromFuture(getStars()).asyncExpand(
+        (stars) => Stream<Iterable<ArticleModel>>.value(stars ?? []));
+  }
+
+  updateStars(Stream<Iterable<ArticleModel>> articleModelStream) async {
+    articleModelStream.asyncMap((articles) async {
+      for (ArticleModel article in articles) {
+        await _db?.update(
+          TABLE,
+          article.toMap(),
+          where: '$documentIdField = ?',
+          whereArgs: [article.documentId],
+        );
+      }
+    }).drain();
   }
 
   deleteStar(String id) async {
     await init();
-    return await _db
-        ?.delete(TABLE, where: '$documentIdField = ?', whereArgs: [id]);
+    await _db?.delete(TABLE, where: '$documentIdField = ?', whereArgs: [id]);
+    return starsStream();
   }
 
   Stream<bool> checkStar(String id) {

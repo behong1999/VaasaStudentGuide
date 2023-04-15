@@ -12,15 +12,17 @@ Future getData({
 }) async {
   final response = await http.get(
     Uri.parse(
-        '''${constants.url}${constants.pathParam}?api_key=${constants.apiKey}
-      &start=$startLng,$startLat&end=$endLng,$endLat'''),
+      '${constants.url}${constants.pathParam}'
+      '?api_key=${constants.apiKey}'
+      '&start=$startLng,$startLat&end=$endLng,$endLat',
+    ),
   );
 
   if (response.statusCode == 200) {
     String responseBody = response.body;
     return jsonDecode(responseBody);
   } else {
-    log(response.statusCode.toString());
+    log('API error: ${response.statusCode.toString()}');
   }
 }
 
