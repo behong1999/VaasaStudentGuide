@@ -14,7 +14,6 @@ import 'package:students_guide/services/direction/open_route_service.dart';
 import 'package:students_guide/utils/custom/c_loading_icon.dart';
 import 'package:students_guide/utils/custom/c_text.dart';
 import 'package:students_guide/utils/custom/c_theme_data.dart';
-import 'package:students_guide/utils/dialogs/location_permission_dialog.dart';
 import 'package:students_guide/utils/extensions/string_extension.dart';
 import 'package:students_guide/services/url_launcher.dart';
 
@@ -93,12 +92,6 @@ class MapViewState extends State<MapView> {
         destination = await getLatLngFromAddress(widget.address);
         await setCustomIcon();
         await setPolylines();
-        // setState(() {});
-      } else {
-        Future.delayed(
-          const Duration(seconds: 0),
-          () async => await requestLocationPermission(context),
-        );
       }
     } catch (e) {
       print(e);

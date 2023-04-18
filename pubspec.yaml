@@ -25,7 +25,6 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^8.1.1
   flutter_google_places: ^0.3.0
-  flutter_launcher_icons: ^0.13.0
   flutter_native_splash: ^2.2.19
   flutter_platform_widgets: ^3.0.0
   flutter_polyline_points: ^1.0.0
@@ -44,6 +43,7 @@ dependencies:
   url_launcher: ^6.1.10
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.13.0
   auto_route_generator: null
   build_runner: null
   flutter_gen_runner: null
@@ -58,9 +58,13 @@ flutter_icons:
   image_path: "assets/images/icon.png"
 
 flutter_native_splash:
-  image: "assets/images/splash_icon.png"
+  image: assets/images/splash_icon.png
+  image_dark: assets/images/splash_icon.png
+  android: true
+  ios: true
   color: "#F9A826"
   color_dark: "#2F2E41"
+  fullscreen: true
 
 flutter:
   assets:

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:students_guide/services/email/send_email.dart';
+import 'package:students_guide/services/theme/cubit/theme_cubit.dart';
 
 import 'package:students_guide/utils/custom/c_app_bar.dart';
 import 'package:students_guide/utils/custom/c_elevated_button.dart';
@@ -31,106 +33,113 @@ class _ContactViewState extends State<ContactView> {
   @override
   Widget build(BuildContext context) {
     // final isLoggedIn = BlocProvider.of<AuthBloc>(context).state is AuthStateSignedIn;
-    return Scaffold(
-      appBar: CustomAppBar(),
-      drawer: const DrawerMenu(isLoggedIn: false),
-      body: ScrollConfiguration(
-        behavior: NoGlowScrollBehavior(),
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Form(
-              key: formKey,
-              child: Column(
-                children: [
-                  const CustomText(
-                    'Get In Touch',
-                    size: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  const SizedBox(height: 25),
-                  CustomTextFormField(
-                    controller: name,
-                    hint: 'Your name',
-                  ),
-                  const SizedBox(height: 20),
-                  CustomTextFormField(
-                    controller: email,
-                    inputType: TextInputType.emailAddress,
-                    hint: 'Email Address',
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter your email in order to reply';
-                      }
-                      return value.validateEmail() ? null : 'Invalid email!';
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  MessageTextField(
-                    wordLimit: wordLimit,
-                    message: message,
-                    onChanged: (value) => setState(
-                      () {
-                        wordCounts = value.countWords();
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Align(
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                          '${message.text == '' ? 0 : wordCounts}/$wordLimit Words')),
-                  isLoading
-                      ? const CustomLoadingIcon()
-                      : CustomElevatedButton(
-                          text: 'Send',
-                          onPressed: () async {
-                            if (formKey.currentState!.validate()) {
-                              setState(() {
-                                isLoading = true;
-                              });
-                              await sendEmail(
-                                  name: name.text,
-                                  email: email.text,
-                                  content: message.text);
-                              setState(() {
-                                isLoading = false;
-                                name.clear();
-                                email.clear();
-                                message.clear();
-                              });
-                              Future.delayed(
-                                const Duration(milliseconds: 50),
-                                () {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      backgroundColor: mColor,
-                                      content: Text('Message Sent!'),
-                                    ),
-                                  );
-                                },
-                              );
-                            }
+    return BlocBuilder<ThemeCubit, ThemeState>(
+      builder: (context, state) {
+        return Scaffold(
+          appBar: CustomAppBar(),
+          drawer: const DrawerMenu(isLoggedIn: false),
+          body: ScrollConfiguration(
+            behavior: NoGlowScrollBehavior(),
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                    children: [
+                      const CustomText(
+                        'Get In Touch',
+                        size: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      const SizedBox(height: 25),
+                      CustomTextFormField(
+                        controller: name,
+                        hint: 'Your name',
+                      ),
+                      const SizedBox(height: 20),
+                      CustomTextFormField(
+                        controller: email,
+                        inputType: TextInputType.emailAddress,
+                        hint: 'Email Address',
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter your email in order to reply';
+                          }
+                          return value.validateEmail()
+                              ? null
+                              : 'Invalid email!';
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      MessageTextField(
+                        wordLimit: wordLimit,
+                        message: message,
+                        onChanged: (value) => setState(
+                          () {
+                            wordCounts = value.countWords();
                           },
                         ),
-                  const SizedBox(height: 50),
-                  const CustomText(
-                    'Contact Me',
-                    size: 24,
-                    fontWeight: FontWeight.bold,
+                      ),
+                      const SizedBox(height: 10),
+                      Align(
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                              '${message.text == '' ? 0 : wordCounts}/$wordLimit Words')),
+                      isLoading
+                          ? const CustomLoadingIcon()
+                          : CustomElevatedButton(
+                              text: 'Send',
+                              onPressed: () async {
+                                if (formKey.currentState!.validate()) {
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+                                  await sendEmail(
+                                      name: name.text,
+                                      email: email.text,
+                                      content: message.text);
+                                  setState(() {
+                                    isLoading = false;
+                                    name.clear();
+                                    email.clear();
+                                    message.clear();
+                                  });
+                                  Future.delayed(
+                                    const Duration(milliseconds: 50),
+                                    () {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          backgroundColor: mColor,
+                                          content: Text('Message Sent!'),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                }
+                              },
+                            ),
+                      const SizedBox(height: 50),
+                      const CustomText(
+                        'Contact Me',
+                        size: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      const SizedBox(height: 20),
+                      const ContactRow(
+                          icon: Icons.call, content: '+358 (0) 41 369 5757'),
+                      const SizedBox(height: 20),
+                      const ContactRow(
+                          icon: Icons.mail, content: 'khonhong46632@gmail.com'),
+                    ],
                   ),
-                  const SizedBox(height: 20),
-                  const ContactRow(
-                      icon: Icons.call, content: '+358 (0) 41 369 5757'),
-                  const SizedBox(height: 20),
-                  const ContactRow(
-                      icon: Icons.mail, content: 'khonhong46632@gmail.com'),
-                ],
+                ),
               ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
@@ -149,6 +158,8 @@ class MessageTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isLight = checkIfLightTheme(context);
+    double radius = 10;
     return Container(
       decoration: const BoxDecoration(
         boxShadow: [
@@ -156,7 +167,7 @@ class MessageTextField extends StatelessWidget {
             color: Colors.black26,
             blurRadius: 10.0,
             spreadRadius: 0.1,
-            offset: Offset(2, 6),
+            offset: Offset(2, 1),
           ),
         ],
       ),
@@ -164,20 +175,19 @@ class MessageTextField extends StatelessWidget {
           maxLines: 10,
           inputFormatters: [WordLimitTextInputFormatter(wordLimit)],
           controller: message,
-          style: const TextStyle(color: mColor),
-          decoration: const InputDecoration(
+          style: TextStyle(color: isLight ? Colors.black38 : Colors.white54),
+          decoration: InputDecoration(
             hintText: 'Enter your message here',
-            hintStyle: TextStyle(color: Colors.black38),
-            contentPadding: EdgeInsets.all(10),
+            contentPadding: const EdgeInsets.all(10),
             filled: true,
-            fillColor: Colors.white,
+            fillColor: isLight ? white : gray,
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black12),
-              borderRadius: BorderRadius.all(Radius.circular(10)),
+              borderSide: const BorderSide(color: Colors.black12),
+              borderRadius: BorderRadius.all(Radius.circular(radius)),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: mColor),
-              borderRadius: BorderRadius.all(Radius.circular(10)),
+              borderSide: const BorderSide(color: mColor),
+              borderRadius: BorderRadius.all(Radius.circular(radius)),
             ),
           ),
           validator: (value) {

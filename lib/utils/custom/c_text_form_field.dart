@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 
 import 'package:students_guide/utils/custom/c_theme_data.dart';
@@ -67,7 +69,7 @@ class CustomTextFormField extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(radius)),
           ),
           hintText: hint,
-          // hintStyle: const TextStyle(colo r: Colors.black38),
+          // hintStyle: const TextStyle(color: Colors.black38),
           labelText: label,
           floatingLabelStyle: TextStyle(
               color: mColor,

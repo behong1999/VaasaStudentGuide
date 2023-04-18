@@ -4,6 +4,7 @@ import 'package:students_guide/models/category_model.dart';
 import 'package:students_guide/services/auth/bloc/auth_bloc.dart';
 import 'package:students_guide/utils/custom/c_text.dart';
 import 'package:students_guide/utils/custom/c_app_bar.dart';
+import 'package:students_guide/utils/dialogs/location_permission_dialog.dart';
 import 'package:students_guide/views/widgets/drawer.dart';
 import 'package:students_guide/views/widgets/home/home_item.dart';
 
@@ -17,6 +18,10 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
+    Future.delayed(
+      const Duration(seconds: 0),
+      () async => await requestLocationPermission(context),
+    );
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
         if (state is AuthStateUninitialized) {
