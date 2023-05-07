@@ -66,7 +66,9 @@ class _ArticleCardState extends State<ArticleCard> {
         },
         title: CustomText(title, fontWeight: FontWeight.bold),
         subtitle: AutoSizeText(
-            address.isNotEmpty ? address : (email.isNotEmpty ? email : date)),
+          address.isNotEmpty ? address : (email.isNotEmpty ? email : date),
+          maxLines: 1,
+        ),
         trailing: widget.isLoggedIn
             ? Wrap(
                 children: [

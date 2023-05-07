@@ -28,20 +28,23 @@ class DetailsText extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Row(
           children: [
-            Text.rich(
-              TextSpan(children: [
-                TextSpan(
-                  text: title.countWords() > 1
-                      ? title
-                      : '${title.toCamelCase()}: ',
-                  style: style?.copyWith(
-                      color: mColor, fontWeight: FontWeight.bold),
-                ),
-                TextSpan(
-                    text: content,
-                    style: style,
-                    recognizer: TapGestureRecognizer()..onTap = onTap),
-              ]),
+            Expanded(
+              child: Text.rich(
+                TextSpan(children: [
+                  TextSpan(
+                    text: title.countWords() > 1
+                        ? title
+                        : '${title.toCamelCase()}: ',
+                    style: style?.copyWith(
+                        color: mColor, fontWeight: FontWeight.bold),
+                  ),
+                  TextSpan(
+                      text: content,
+                      style: style,
+                      recognizer: TapGestureRecognizer()..onTap = onTap),
+                ]),
+                textDirection: TextDirection.ltr,
+              ),
             ),
             suffixIcon ?? const SizedBox.shrink()
           ],
