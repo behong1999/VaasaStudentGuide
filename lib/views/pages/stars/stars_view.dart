@@ -12,7 +12,7 @@ import 'package:students_guide/utils/custom/c_text.dart';
 import 'package:students_guide/utils/custom/c_theme_data.dart';
 import 'package:students_guide/utils/routes/router.gr.dart';
 import 'package:students_guide/views/widgets/articles/stars/star_card.dart';
-import 'package:students_guide/views/widgets/articles/view_all/search_bar.dart';
+import 'package:students_guide/utils/custom/c_search_bar.dart';
 import 'package:students_guide/views/widgets/drawer.dart';
 
 final StarsService _starsService = StarsService();
@@ -116,7 +116,7 @@ class _StarsViewState extends State<StarsView> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            SearchBar(
+            CustomSearchBar(
               controller: _search,
               onChanged: (value) => setState(() {
                 keyword = _search.text;

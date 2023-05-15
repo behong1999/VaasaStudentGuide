@@ -13,7 +13,7 @@ import 'package:students_guide/utils/custom/c_loading_icon.dart';
 import 'package:students_guide/utils/custom/c_theme_data.dart';
 import 'package:students_guide/views/widgets/articles/view_all/add_edit_article_button.dart';
 import 'package:students_guide/views/widgets/articles/view_all/article_card.dart';
-import 'package:students_guide/views/widgets/articles/view_all/search_bar.dart';
+import 'package:students_guide/utils/custom/c_search_bar.dart';
 import 'package:students_guide/views/widgets/home/home_item.dart';
 
 class ArticlesView extends StatefulWidget {
@@ -88,7 +88,7 @@ class _ArticlesViewState extends State<ArticlesView> {
               children: [
                 SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                 //* Search bar
-                SearchBar(
+                CustomSearchBar(
                   controller: _search,
                   onChanged: (value) => setState(() {
                     _keyword = value;

@@ -14,8 +14,8 @@ dependencies:
   bloc: ^8.1.0
   bloc_test: ^9.1.1
   cached_network_image: ^3.2.3
-  cloud_firestore: ^4.2.0
-  connectivity_plus: ^3.0.3
+  cloud_firestore: ^4.7.0
+  connectivity_plus: ^4.0.0
   cupertino_icons: ^1.0.2
   enum_to_string: ^2.0.1
   equatable: ^2.0.5
@@ -26,15 +26,15 @@ dependencies:
   flutter_bloc: ^8.1.1
   flutter_google_places: ^0.3.0
   flutter_native_splash: ^2.2.19
-  flutter_platform_widgets: ^3.0.0
+  flutter_platform_widgets: ^3.3.2
   flutter_polyline_points: ^1.0.0
   font_awesome_flutter: ^10.4.0
   geocoding: ^2.1.0
   geolocator: ^9.0.2
-  google_fonts: ^3.0.1
+  google_fonts: ^4.0.4
   google_maps_flutter: ^2.2.5
   http: ^0.13.5
-  intl: ^0.17.0
+  intl: ^0.18.1
   path: ^1.8.2
   permission_handler: ^10.2.0
   shared_preferences: ^2.0.15
@@ -43,10 +43,10 @@ dependencies:
   url_launcher: ^6.1.10
 
 dev_dependencies:
-  flutter_launcher_icons: ^0.13.0
   auto_route_generator: null
   build_runner: null
   flutter_gen_runner: null
+  flutter_launcher_icons: ^0.13.0
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
