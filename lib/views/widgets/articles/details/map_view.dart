@@ -173,8 +173,8 @@ class MapViewState extends State<MapView> {
                         compassEnabled: true,
                         zoomGesturesEnabled: true,
                         scrollGesturesEnabled: true,
-                        gestureRecognizers: <
-                            Factory<OneSequenceGestureRecognizer>>{
+                        gestureRecognizers: <Factory<
+                            OneSequenceGestureRecognizer>>{
                           Factory<OneSequenceGestureRecognizer>(
                             () => EagerGestureRecognizer(),
                           ),

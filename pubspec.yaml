@@ -46,6 +46,7 @@ dev_dependencies:
   auto_route_generator: null
   build_runner: null
   flutter_gen_runner: null
+  mockito: ^5.0.0
   flutter_launcher_icons: ^0.13.0
   flutter_lints: ^2.0.0
   flutter_test:
