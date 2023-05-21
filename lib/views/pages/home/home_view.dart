@@ -19,7 +19,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     Future.delayed(
-      const Duration(seconds: 0),
+      Duration.zero,
       () async => await requestLocationPermission(context),
     );
     return BlocBuilder<AuthBloc, AuthState>(
@@ -29,7 +29,7 @@ class _HomeViewState extends State<HomeView> {
         }
         final isLoggedIn = state is AuthStateSignedIn;
         return Scaffold(
-          appBar: CustomAppBar(),
+          appBar: const CustomAppBar(),
           drawer: DrawerMenu(isLoggedIn: isLoggedIn),
           body: Column(
             children: [

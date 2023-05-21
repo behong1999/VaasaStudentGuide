@@ -154,6 +154,7 @@ class _ArticleDetailsViewState extends State<ArticleDetailsView> {
           SliverAppBar(
             iconTheme: IconThemeData(color: isLight ? black : white),
             leading: PlatformIconButton(
+                color: white,
                 materialIcon: const Icon(Icons.arrow_back),
                 cupertinoIcon: const Icon(Icons.arrow_back_ios),
                 onPressed: () {

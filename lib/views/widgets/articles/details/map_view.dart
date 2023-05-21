@@ -11,6 +11,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:students_guide/gen/assets.gen.dart';
 import 'package:students_guide/services/direction/open_route_service.dart';
+import 'package:students_guide/utils/custom/c_elevated_button.dart';
 import 'package:students_guide/utils/custom/c_loading_icon.dart';
 import 'package:students_guide/utils/custom/c_text.dart';
 import 'package:students_guide/utils/custom/c_theme_data.dart';
@@ -53,6 +54,11 @@ class MapViewState extends State<MapView> {
     super.dispose();
   }
 
+  Future<LatLng> getLatLngFromAddress(String address) async {
+    return await locationFromAddress(address)
+        .then((value) => LatLng(value[0].latitude, value[0].longitude));
+  }
+
   Future<Uint8List> getBytesFromAsset(
       String path, int? width, int? height) async {
     ByteData data = await rootBundle.load(path);
@@ -74,28 +80,6 @@ class MapViewState extends State<MapView> {
         await getBytesFromAsset(Assets.images.locationIcon.path, 120, 120);
 
     currentIcon = BitmapDescriptor.fromBytes(markerIcon);
-  }
-
-  Future<LatLng> getLatLngFromAddress(String address) async {
-    return await locationFromAddress(address)
-        .then((value) => LatLng(value[0].latitude, value[0].longitude));
-  }
-
-  void mapInit() async {
-    try {
-      if (await Permission.location.isGranted) {
-        //* Get current location
-        currentLocation = await Geolocator.getCurrentPosition()
-            .then((value) => LatLng(value.latitude, value.longitude));
-
-        //* Get latitude and longitude of the destination
-        destination = await getLatLngFromAddress(widget.address);
-        await setCustomIcon();
-        await setPolylines();
-      }
-    } catch (e) {
-      print(e);
-    }
   }
 
   setPolylines() async {
@@ -145,82 +129,116 @@ class MapViewState extends State<MapView> {
     // }
   }
 
+  void mapInit() async {
+    try {
+      if (await Permission.location.isGranted) {
+        //* Get current location
+        currentLocation = await Geolocator.getCurrentPosition()
+            .then((value) => LatLng(value.latitude, value.longitude));
+
+        //* Get latitude and longitude of the destination
+        destination = await getLatLngFromAddress(widget.address);
+        await setCustomIcon();
+        await setPolylines();
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void _onMapCreated(GoogleMapController controller) {
+    _controller.complete(controller);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<LatLng>(
-        future: getLatLngFromAddress(widget.address),
+    return FutureBuilder(
+        future: Permission.location.isDenied,
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            if (snapshot.data!.latitude >= 0) {
-              return Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.4,
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      child: GoogleMap(
-                        mapType: MapType.normal,
-                        initialCameraPosition: CameraPosition(
-                            target: snapshot.data as LatLng, zoom: 13),
-                        markers: markers,
-                        polylines: polylines,
-                        onMapCreated: (GoogleMapController controller) {
-                          _controller.complete(controller);
-                        },
-                        myLocationEnabled: true,
-                        tiltGesturesEnabled: true,
-                        compassEnabled: true,
-                        zoomGesturesEnabled: true,
-                        scrollGesturesEnabled: true,
-                        gestureRecognizers: <Factory<
-                            OneSequenceGestureRecognizer>>{
-                          Factory<OneSequenceGestureRecognizer>(
-                            () => EagerGestureRecognizer(),
+          if (snapshot.data!) {
+            return Center(
+                child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: CustomElevatedButton(
+                  onPressed: () async => await openAppSettings(),
+                  text: "Open permission settings to view the map"),
+            ));
+          } else {
+            return FutureBuilder<LatLng>(
+                future: getLatLngFromAddress(widget.address),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    if (snapshot.data!.latitude >= 0) {
+                      return Stack(
+                        children: [
+                          Align(
+                            alignment: Alignment.topCenter,
+                            child: SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.4,
+                              width: MediaQuery.of(context).size.width * 0.9,
+                              child: GoogleMap(
+                                mapType: MapType.normal,
+                                initialCameraPosition: CameraPosition(
+                                    target: snapshot.data as LatLng, zoom: 13),
+                                markers: markers,
+                                polylines: polylines,
+                                onMapCreated: _onMapCreated,
+                                myLocationEnabled: true,
+                                tiltGesturesEnabled: true,
+                                compassEnabled: true,
+                                zoomControlsEnabled: true,
+                                zoomGesturesEnabled: true,
+                                scrollGesturesEnabled: true,
+                                gestureRecognizers: <Factory<
+                                    OneSequenceGestureRecognizer>>{
+                                  Factory<OneSequenceGestureRecognizer>(
+                                    () => EagerGestureRecognizer(),
+                                  ),
+                                },
+                              ),
+                            ),
                           ),
-                        },
+                          Positioned(
+                            top: 8,
+                            left: 28,
+                            child: Container(
+                              height: 45,
+                              width: 45,
+                              decoration: BoxDecoration(
+                                  color: Colors.white70,
+                                  border: Border.all(
+                                    color: Colors.black12,
+                                  )),
+                              child: IconButton(
+                                  iconSize: 28,
+                                  onPressed: () {
+                                    mapLauncher(
+                                      currentLocation.latitude,
+                                      currentLocation.longitude,
+                                      widget.address,
+                                    );
+                                  },
+                                  icon: const Icon(Icons.map, color: mColor)),
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+                  } else if (snapshot.hasError) {
+                    return const Padding(
+                      padding: EdgeInsets.only(left: 20),
+                      child: Center(
+                        child: CustomText(
+                          'Cannot open map view. Please check the Internet connection and try again.',
+                          size: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                  ),
-                  Positioned(
-                    top: 8,
-                    left: 28,
-                    child: Container(
-                      height: 45,
-                      width: 45,
-                      decoration: BoxDecoration(
-                          color: Colors.white70,
-                          border: Border.all(
-                            color: Colors.black12,
-                          )),
-                      child: IconButton(
-                          iconSize: 28,
-                          onPressed: () {
-                            mapLauncher(
-                              currentLocation.latitude,
-                              currentLocation.longitude,
-                              widget.address,
-                            );
-                          },
-                          icon: const Icon(Icons.open_in_full, color: mColor)),
-                    ),
-                  ),
-                ],
-              );
-            }
-          } else if (snapshot.hasError) {
-            return const Padding(
-              padding: EdgeInsets.only(left: 20),
-              child: Center(
-                child: CustomText(
-                  'Cannot open map view. Please check the Internet connection and try again.',
-                  size: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            );
+                    );
+                  }
+                  return const CustomLoadingIcon();
+                });
           }
-          return const CustomLoadingIcon();
         });
   }
 }
