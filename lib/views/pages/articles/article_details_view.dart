@@ -6,6 +6,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:students_guide/services/url_launcher.dart';
+import 'package:students_guide/utils/custom/c_scroll_config.dart';
 import 'package:students_guide/views/widgets/articles/details/map_view.dart';
 
 import 'package:students_guide/models/article_model.dart';
@@ -84,7 +85,6 @@ class _ArticleDetailsViewState extends State<ArticleDetailsView> {
         });
       }
     });
-
     super.initState();
   }
 
@@ -147,201 +147,203 @@ class _ArticleDetailsViewState extends State<ArticleDetailsView> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: CustomScrollView(
-        controller: scrollController,
-        slivers: [
-          //* App bar including Image and Title
-          SliverAppBar(
-            iconTheme: IconThemeData(color: isLight ? black : white),
-            leading: PlatformIconButton(
-                color: white,
-                materialIcon: const Icon(Icons.arrow_back),
-                cupertinoIcon: const Icon(Icons.arrow_back_ios),
-                onPressed: () {
-                  Navigator.pop(context, isChanged);
-                }),
-            expandedHeight: expandedHeight,
-            pinned: true,
-            flexibleSpace: FlexibleSpaceBar(
-              titlePadding: const EdgeInsets.all(0),
-              title: SafeArea(
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(spacing, 8, 0, 8),
-                  color: black.withOpacity(0.5),
+      body: ScrollConfig(
+        child: CustomScrollView(
+          controller: scrollController,
+          slivers: [
+            //* App bar including Image and Title
+            SliverAppBar(
+              iconTheme: IconThemeData(color: isLight ? black : white),
+              leading: PlatformIconButton(
+                  color: white,
+                  materialIcon: const Icon(Icons.arrow_back),
+                  cupertinoIcon: const Icon(Icons.arrow_back_ios),
+                  onPressed: () {
+                    Navigator.pop(context, isChanged);
+                  }),
+              expandedHeight: expandedHeight,
+              pinned: true,
+              flexibleSpace: FlexibleSpaceBar(
+                titlePadding: const EdgeInsets.all(0),
+                title: SafeArea(
+                  child: Container(
+                    padding: EdgeInsets.fromLTRB(spacing, 8, 0, 8),
+                    color: black.withOpacity(0.5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        //* TITLE
+                        Flexible(
+                          child: Text(
+                            title,
+                            textAlign: TextAlign.start,
+                            style: titleStyle,
+                          ),
+                        ),
+                        //* MENU ICON
+                        loggedIn
+                            //* POP UP MENU FOR ADMIN ONLY
+                            ? PopupMenuButton(
+                                icon: const Icon(
+                                  Icons.more_vert_rounded,
+                                  color: white,
+                                ),
+                                color: isLight ? white : gray,
+                                itemBuilder: (context) {
+                                  return options.entries
+                                      .map(
+                                        (e) => PopupMenuItem(
+                                          onTap: e.value,
+                                          child: SizedBox(child: Text(e.key)),
+                                        ),
+                                      )
+                                      .toList();
+                                },
+                              )
+                            //* STAR BUTTON
+                            : StarButton(
+                                isStarred: starredStatus,
+                                onPressed: () => setState(
+                                  () {
+                                    starredStatus = !starredStatus;
+                                    isChanged = !isChanged;
+
+                                    if (starredStatus) {
+                                      _starsService.addStar(article);
+                                    } else {
+                                      _starsService.deleteStar(id);
+                                    }
+                                  },
+                                ),
+                              )
+                      ],
+                    ),
+                  ),
+                ),
+                background: CachedNetworkImage(
+                  imageUrl: image,
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) => const CustomLoadingIcon(),
+                  errorWidget: (context, url, error) =>
+                      const Center(child: CustomText('No image to show')),
+                ),
+              ),
+            ),
+
+            SliverList(
+              delegate: SliverChildListDelegate([
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 10),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      //* TITLE
-                      Flexible(
+                      Text('Latest Update on $date', style: dateStyle),
+                      Visibility(
+                        visible: loggedIn,
                         child: Text(
-                          title,
-                          textAlign: TextAlign.start,
-                          style: titleStyle,
+                          ' by ${lastBy.split('@')[0]}',
+                          style: dateStyle,
                         ),
                       ),
-                      //* MENU ICON
-                      loggedIn
-                          //* POP UP MENU FOR ADMIN ONLY
-                          ? PopupMenuButton(
-                              icon: const Icon(
-                                Icons.more_vert_rounded,
-                                color: white,
-                              ),
-                              color: isLight ? white : gray,
-                              itemBuilder: (context) {
-                                return options.entries
-                                    .map(
-                                      (e) => PopupMenuItem(
-                                        onTap: e.value,
-                                        child: SizedBox(child: Text(e.key)),
-                                      ),
-                                    )
-                                    .toList();
-                              },
-                            )
-                          //* STAR BUTTON
-                          : StarButton(
-                              isStarred: starredStatus,
-                              onPressed: () => setState(
-                                () {
-                                  starredStatus = !starredStatus;
-                                  isChanged = !isChanged;
-
-                                  if (starredStatus) {
-                                    _starsService.addStar(article);
-                                  } else {
-                                    _starsService.deleteStar(id);
-                                  }
-                                },
-                              ),
-                            )
                     ],
                   ),
                 ),
-              ),
-              background: CachedNetworkImage(
-                imageUrl: image,
-                fit: BoxFit.cover,
-                placeholder: (context, url) => const CustomLoadingIcon(),
-                errorWidget: (context, url, error) =>
-                    const Center(child: CustomText('No image to show')),
-              ),
-            ),
-          ),
 
-          SliverList(
-            delegate: SliverChildListDelegate([
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
-                child: Row(
-                  children: [
-                    Text('Latest Update on $date', style: dateStyle),
-                    Visibility(
-                      visible: loggedIn,
-                      child: Text(
-                        ' by ${lastBy.split('@')[0]}',
-                        style: dateStyle,
-                      ),
-                    ),
-                  ],
+                //* INTRODUCTION
+                DetailsContainer(
+                  content: intro,
+                  style: contentStyle,
                 ),
-              ),
 
-              //* INTRODUCTION
-              DetailsContainer(
-                content: intro,
-                style: contentStyle,
-              ),
+                SizedBox(height: hBetween),
 
-              SizedBox(height: hBetween),
+                //* DETAILED INFORMATION
+                DetailsContainer(
+                  title: 'Detailed Information',
+                  content: info,
+                  style: contentStyle,
+                ),
 
-              //* DETAILED INFORMATION
-              DetailsContainer(
-                title: 'Detailed Information',
-                content: info,
-                style: contentStyle,
-              ),
+                Visibility(
+                  visible: address.isNotEmpty,
+                  child: SizedBox(height: hBetween * 3),
+                ),
 
-              Visibility(
-                visible: address.isNotEmpty,
-                child: SizedBox(height: hBetween * 3),
-              ),
+                //* ADDRESS
+                DetailsText(
+                  title: addressField,
+                  content: address,
+                  style: contentStyle,
+                ),
 
-              //* ADDRESS
-              DetailsText(
-                title: addressField,
-                content: address,
-                style: contentStyle,
-              ),
+                Visibility(
+                  visible: address.isNotEmpty,
+                  child: SizedBox(height: hBetween * 2),
+                ),
 
-              Visibility(
-                visible: address.isNotEmpty,
-                child: SizedBox(height: hBetween * 2),
-              ),
+                //* MAP
+                Visibility(
+                  visible: address.isNotEmpty,
+                  child: MapView(address: address),
+                ),
 
-              //* MAP
-              Visibility(
-                visible: address.isNotEmpty,
-                child: MapView(address: address),
-              ),
+                Visibility(
+                  visible: email.isNotEmpty,
+                  child: SizedBox(height: hBetween),
+                ),
 
-              Visibility(
-                visible: email.isNotEmpty,
-                child: SizedBox(height: hBetween),
-              ),
+                //* EMAIL
+                DetailsText(
+                  title: emailField,
+                  content: email,
+                  style: contentStyle,
+                  onTap: () => launcher(email, emailField),
+                  suffixIcon: IconButton(
+                      onPressed: () {
+                        Clipboard.setData(ClipboardData(text: email));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          customSnackBar(
+                            content: "Copied to clipboard",
+                            duration: const Duration(seconds: 1),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.copy, size: 16)),
+                ),
 
-              //* EMAIL
-              DetailsText(
-                title: emailField,
-                content: email,
-                style: contentStyle,
-                onTap: () => launcher(email, emailField),
-                suffixIcon: IconButton(
-                    onPressed: () {
-                      Clipboard.setData(ClipboardData(text: email));
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        customSnackBar(
-                          content: "Copied to clipboard",
-                          duration: const Duration(seconds: 1),
-                        ),
-                      );
-                    },
-                    icon: const Icon(Icons.copy, size: 16)),
-              ),
+                Visibility(
+                  visible: tel.isNotEmpty,
+                  child: SizedBox(height: hBetween),
+                ),
 
-              Visibility(
-                visible: tel.isNotEmpty,
-                child: SizedBox(height: hBetween),
-              ),
+                //* TELEPHONE
+                DetailsText(
+                  title: 'Phone Number: ',
+                  content: tel,
+                  style: contentStyle,
+                  onTap: () => launcher(tel, telField),
+                ),
 
-              //* TELEPHONE
-              DetailsText(
-                title: 'Phone Number: ',
-                content: tel,
-                style: contentStyle,
-                onTap: () => launcher(tel, telField),
-              ),
+                Visibility(
+                  visible: website.isNotEmpty,
+                  child: SizedBox(height: hBetween * 3),
+                ),
 
-              Visibility(
-                visible: website.isNotEmpty,
-                child: SizedBox(height: hBetween * 3),
-              ),
+                //* WEBSITE LINK
+                DetailsText(
+                  title: websiteField,
+                  content: website,
+                  style: contentStyle,
+                  onTap: () {
+                    launcher(website, websiteField);
+                  },
+                ),
 
-              //* WEBSITE LINK
-              DetailsText(
-                title: websiteField,
-                content: website,
-                style: contentStyle,
-                onTap: () {
-                  launcher(website, websiteField);
-                },
-              ),
-
-              SizedBox(height: hBetween),
-            ]),
-          )
-        ],
+                SizedBox(height: hBetween),
+              ]),
+            )
+          ],
+        ),
       ),
     );
   }

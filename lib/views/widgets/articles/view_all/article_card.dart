@@ -6,6 +6,7 @@ import 'package:students_guide/models/article_model.dart';
 import 'package:students_guide/services/articles/cloud_service.dart';
 import 'package:students_guide/services/stars/stars_service.dart';
 import 'package:students_guide/utils/custom/c_text.dart';
+import 'package:students_guide/utils/custom/c_theme_data.dart';
 import 'package:students_guide/utils/dialogs/delete_dialog.dart';
 import 'package:students_guide/utils/routes/router.gr.dart';
 import 'package:students_guide/views/widgets/articles/stars/star_button.dart';
@@ -26,7 +27,6 @@ class ArticleCard extends StatefulWidget {
 class _ArticleCardState extends State<ArticleCard> {
   late final StarsService _starsService;
   late final CloudService _cloudService;
-  bool isStarred = false;
 
   @override
   void initState() {
@@ -49,6 +49,7 @@ class _ArticleCardState extends State<ArticleCard> {
     final address = article.address.toString();
     final email = article.email.toString();
     final date = DateFormat('dd/MM/yyyy').format(article.date);
+    bool isStarred = false;
 
     return Card(
       child: ListTile(
@@ -79,38 +80,37 @@ class _ArticleCardState extends State<ArticleCard> {
                       },
                       icon: const Icon(Icons.edit)),
                   IconButton(
-                      onPressed: () async {
-                        bool delete = await showDeleteDialog(context);
-                        if (delete) _cloudService.deleteArticle(id);
-                      },
-                      icon: const Icon(
-                        Icons.delete,
-                        color: Colors.red,
-                      )),
+                    onPressed: () async {
+                      bool delete = await showDeleteDialog(context);
+                      if (delete) _cloudService.deleteArticle(id);
+                    },
+                    icon: const Icon(
+                      Icons.delete,
+                      color: Colors.red,
+                    ),
+                  ),
                 ],
               )
             : StreamBuilder<bool>(
                 stream: _starsService.checkStar(id),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return StarButton(
-                      isStarred: false,
-                      onPressed: () {},
-                    );
-                  } else {
-                    isStarred = snapshot.data ?? false;
-                    return StarButton(
-                      isStarred: isStarred,
-                      onPressed: () => setState(() {
+                    return const CircularProgressIndicator(color: mColor);
+                  }
+                  isStarred = snapshot.data!;
+                  return StarButton(
+                    isStarred: isStarred,
+                    onPressed: () => setState(
+                      () {
                         isStarred = !isStarred;
                         if (isStarred) {
                           _starsService.addStar(article);
                         } else {
                           _starsService.deleteStar(id);
                         }
-                      }),
-                    );
-                  }
+                      },
+                    ),
+                  );
                 }),
       ),
     );

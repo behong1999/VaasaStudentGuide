@@ -9,9 +9,9 @@ import 'package:students_guide/utils/custom/c_loading_icon.dart';
 import 'package:students_guide/utils/custom/c_text.dart';
 import 'package:students_guide/utils/custom/c_text_form_field.dart';
 import 'package:students_guide/utils/custom/c_theme_data.dart';
+import 'package:students_guide/utils/custom/c_scroll_config.dart';
 import 'package:students_guide/utils/custom/word_limit_text_formatter.dart';
 import 'package:students_guide/utils/extensions/string_extension.dart';
-import 'package:students_guide/utils/no_glow_scroll_behavior.dart';
 import 'package:students_guide/views/widgets/drawer.dart';
 
 class ContactView extends StatefulWidget {
@@ -36,10 +36,9 @@ class _ContactViewState extends State<ContactView> {
     return BlocBuilder<ThemeCubit, ThemeState>(
       builder: (context, state) {
         return Scaffold(
-          appBar: CustomAppBar(),
+          appBar: const CustomAppBar(),
           drawer: const DrawerMenu(isLoggedIn: false),
-          body: ScrollConfiguration(
-            behavior: NoGlowScrollBehavior(),
+          body: ScrollConfig(
             child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),

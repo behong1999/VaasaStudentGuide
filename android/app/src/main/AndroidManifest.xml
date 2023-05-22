@@ -13,7 +13,7 @@
         </intent>
     </queries>
    <application
-        android:label="Student Guide Vaasa"
+        android:label="Vaasa Student Guide"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity

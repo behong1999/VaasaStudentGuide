@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:students_guide/services/auth/bloc/auth_bloc.dart';
 import 'package:students_guide/services/theme/cubit/theme_cubit.dart';
+import 'package:students_guide/utils/custom/c_scroll_config.dart';
 import 'package:students_guide/utils/dialogs/sign_out_dialog.dart';
 import 'package:students_guide/utils/enums.dart';
 import 'package:students_guide/utils/extensions/string_extension.dart';
@@ -37,113 +38,117 @@ class _DrawerMenuState extends State<DrawerMenu> {
           child: Column(
             children: [
               Flexible(
-                child: ListView(
-                  children: [
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.25,
-                      child: DrawerHeader(
-                        padding: const EdgeInsets.all(15),
-                        decoration: const BoxDecoration(color: mColor),
-                        child: Align(
-                          alignment: Alignment.topLeft,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CircleAvatar(
-                                radius: 40,
-                                backgroundColor: white,
-                                child: Icon(
-                                  widget.isLoggedIn
-                                      ? FontAwesomeIcons.userShield
-                                      : Icons.person,
-                                  size: 40,
-                                  color: black,
+                child: ScrollConfig(
+                  child: ListView(
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.25,
+                        child: DrawerHeader(
+                          padding: const EdgeInsets.all(15),
+                          decoration: const BoxDecoration(color: mColor),
+                          child: Align(
+                            alignment: Alignment.topLeft,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CircleAvatar(
+                                  radius: 40,
+                                  backgroundColor: white,
+                                  child: Icon(
+                                    widget.isLoggedIn
+                                        ? FontAwesomeIcons.userShield
+                                        : Icons.person,
+                                    size: 40,
+                                    color: black,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(height: 10),
-                              Text(
-                                widget.isLoggedIn ? 'Admin' : 'Free User',
-                                style: const TextStyle(
-                                  fontSize: 22,
-                                  color: white,
+                                const SizedBox(height: 10),
+                                Text(
+                                  widget.isLoggedIn ? 'Admin' : 'Free User',
+                                  style: const TextStyle(
+                                    fontSize: 22,
+                                    color: white,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(height: 10),
-                              if (widget.isLoggedIn)
-                                Text(FirebaseAuth.instance.currentUser!.email
-                                    .toString())
-                            ],
+                                const SizedBox(height: 10),
+                                if (widget.isLoggedIn)
+                                  Text(FirebaseAuth.instance.currentUser!.email
+                                      .toString())
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    DrawerItem(
-                      icon: Icons.home,
-                      title: const DrawerText('Home'),
-                      onTap: () => pushAndPopUntil(context, const HomeRoute()),
-                    ),
-                    if (widget.isLoggedIn)
                       DrawerItem(
-                        icon: Icons.edit,
-                        title: const DrawerText('Add'),
-                        onTap: () => context.router.push(AddEditRoute()),
-                      )
-                    else
-                      ...([
+                        icon: Icons.home,
+                        title: const DrawerText('Home'),
+                        onTap: () =>
+                            pushAndPopUntil(context, const HomeRoute()),
+                      ),
+                      if (widget.isLoggedIn)
                         DrawerItem(
-                          icon: Icons.star,
-                          title: const DrawerText('Stars'),
-                          onTap: () async {
-                            pushAndPopUntil(context, const StarsRoute());
-                          },
-                        ),
-                        DrawerItem(
-                          icon: CustomIcons.contact,
-                          title: const DrawerText('Contact'),
-                          onTap: () =>
-                              pushAndPopUntil(context, const ContactRoute()),
-                        ),
-                      ]),
-                    Column(
-                      children: [
-                        DrawerItem(
-                          icon: CustomIcons.brightness,
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              DrawerText('$themeMode theme'),
-                              PopupMenuButton(
-                                icon:
-                                    const Icon(Icons.arrow_drop_down_outlined),
-                                itemBuilder: (BuildContext context) {
-                                  return Themes.values.map((theme) {
-                                    final textTheme =
-                                        EnumToString.convertToString(theme)
-                                            .toCamelCase();
-                                    return PopupMenuItem(
-                                      value: theme,
-                                      child: Text(
-                                        textTheme,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.w400),
-                                      ),
-                                    );
-                                  }).toList();
-                                },
-                                onSelected: (value) {
-                                  final themeIndex =
-                                      Themes.values.indexOf(value);
-                                  BlocProvider.of<ThemeCubit>(context).setTheme(
-                                    themeIndex,
-                                  );
-                                },
-                              )
-                            ],
+                          icon: Icons.edit,
+                          title: const DrawerText('Add'),
+                          onTap: () => context.router.push(AddEditRoute()),
+                        )
+                      else
+                        ...([
+                          DrawerItem(
+                            icon: Icons.star,
+                            title: const DrawerText('Stars'),
+                            onTap: () async {
+                              pushAndPopUntil(context, const StarsRoute());
+                            },
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                          DrawerItem(
+                            icon: CustomIcons.contact,
+                            title: const DrawerText('Contact'),
+                            onTap: () =>
+                                pushAndPopUntil(context, const ContactRoute()),
+                          ),
+                        ]),
+                      Column(
+                        children: [
+                          DrawerItem(
+                            icon: CustomIcons.brightness,
+                            title: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                DrawerText('$themeMode theme'),
+                                PopupMenuButton(
+                                  icon: const Icon(
+                                      Icons.arrow_drop_down_outlined),
+                                  itemBuilder: (BuildContext context) {
+                                    return Themes.values.map((theme) {
+                                      final textTheme =
+                                          EnumToString.convertToString(theme)
+                                              .toCamelCase();
+                                      return PopupMenuItem(
+                                        value: theme,
+                                        child: Text(
+                                          textTheme,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                      );
+                                    }).toList();
+                                  },
+                                  onSelected: (value) {
+                                    final themeIndex =
+                                        Themes.values.indexOf(value);
+                                    BlocProvider.of<ThemeCubit>(context)
+                                        .setTheme(
+                                      themeIndex,
+                                    );
+                                  },
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
               Column(

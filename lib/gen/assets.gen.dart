@@ -20,6 +20,10 @@ class $AssetsImagesGen {
   AssetGenImage get education =>
       const AssetGenImage('assets/images/education.jpg');
 
+  /// File path: assets/images/google_maps.png
+  AssetGenImage get googleMaps =>
+      const AssetGenImage('assets/images/google_maps.png');
+
   /// File path: assets/images/icon.png
   AssetGenImage get icon => const AssetGenImage('assets/images/icon.png');
 
@@ -61,6 +65,7 @@ class $AssetsImagesGen {
   List<AssetGenImage> get values => [
         community,
         education,
+        googleMaps,
         icon,
         jobs,
         locationIcon,

@@ -48,7 +48,7 @@ class _StarsViewState extends State<StarsView> {
   @override
   dispose() {
     _search.dispose();
-    _starsService.close();
+    // _starsService.close();
     subscription.cancel();
     super.dispose();
   }

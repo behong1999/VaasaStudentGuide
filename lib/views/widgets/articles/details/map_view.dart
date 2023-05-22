@@ -14,7 +14,6 @@ import 'package:students_guide/services/direction/open_route_service.dart';
 import 'package:students_guide/utils/custom/c_elevated_button.dart';
 import 'package:students_guide/utils/custom/c_loading_icon.dart';
 import 'package:students_guide/utils/custom/c_text.dart';
-import 'package:students_guide/utils/custom/c_theme_data.dart';
 import 'package:students_guide/utils/extensions/string_extension.dart';
 import 'package:students_guide/services/url_launcher.dart';
 
@@ -152,10 +151,10 @@ class MapViewState extends State<MapView> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
+    return FutureBuilder<bool>(
         future: Permission.location.isDenied,
         builder: (context, snapshot) {
-          if (snapshot.data!) {
+          if (snapshot.hasData && snapshot.data == true) {
             return Center(
                 child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -205,20 +204,29 @@ class MapViewState extends State<MapView> {
                               height: 45,
                               width: 45,
                               decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(3),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Colors.black12,
+                                      offset: Offset(3.0, 3.0),
+                                      blurRadius: 3.0,
+                                    )
+                                  ],
                                   color: Colors.white70,
                                   border: Border.all(
                                     color: Colors.black12,
                                   )),
-                              child: IconButton(
-                                  iconSize: 28,
-                                  onPressed: () {
+                              child: InkWell(
+                                  onTap: () {
                                     mapLauncher(
                                       currentLocation.latitude,
                                       currentLocation.longitude,
                                       widget.address,
                                     );
                                   },
-                                  icon: const Icon(Icons.map, color: mColor)),
+                                  child: Image.asset(
+                                    Assets.images.googleMaps.path,
+                                  )),
                             ),
                           ),
                         ],
@@ -227,13 +235,22 @@ class MapViewState extends State<MapView> {
                   } else if (snapshot.hasError) {
                     return const Padding(
                       padding: EdgeInsets.only(left: 20),
-                      child: Center(
-                        child: CustomText(
-                          'Cannot open map view. Please check the Internet connection and try again.',
-                          size: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            CustomText(
+                              'Internet connection lost!',
+                              size: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red,
+                            ),
+                            CustomText(
+                              'Please try again to view the map.',
+                              size: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red,
+                            ),
+                          ]),
                     );
                   }
                   return const CustomLoadingIcon();

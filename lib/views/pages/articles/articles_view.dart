@@ -11,6 +11,7 @@ import 'package:students_guide/services/stars/stars_service.dart';
 import 'package:students_guide/utils/custom/c_app_bar.dart';
 import 'package:students_guide/utils/custom/c_loading_icon.dart';
 import 'package:students_guide/utils/custom/c_theme_data.dart';
+import 'package:students_guide/utils/custom/c_scroll_config.dart';
 import 'package:students_guide/views/widgets/articles/view_all/add_edit_article_button.dart';
 import 'package:students_guide/views/widgets/articles/view_all/article_card.dart';
 import 'package:students_guide/utils/custom/c_search_bar.dart';
@@ -60,7 +61,7 @@ class _ArticlesViewState extends State<ArticlesView> {
 
   @override
   void dispose() {
-    _starsService.close();
+    // _starsService.close();
     subscription.cancel();
     super.dispose();
   }
@@ -133,20 +134,28 @@ class _ArticlesViewState extends State<ArticlesView> {
                         }
 
                         return Flexible(
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: _results.length,
-                            itemBuilder: (context, index) {
-                              return ArticleCard(
-                                isLoggedIn: isLoggedIn,
-                                articleModel: _results.elementAt(index),
-                              );
-                            },
+                          child: ScrollConfig(
+                            child: ListView.builder(
+                              physics: const BouncingScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: _results.length,
+                              itemBuilder: (context, index) {
+                                return ArticleCard(
+                                  isLoggedIn: isLoggedIn,
+                                  articleModel: _results.elementAt(index),
+                                );
+                              },
+                            ),
                           ),
                         );
 
                       default:
-                        return const CustomLoadingIcon();
+                        return const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CustomLoadingIcon(),
+                          ],
+                        );
                     }
                   },
                 ),
