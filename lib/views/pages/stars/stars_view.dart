@@ -55,159 +55,164 @@ class _StarsViewState extends State<StarsView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(
-        actions: [
-          IconButton(
-              onPressed: () async {
-                _starsService.getStars();
-                setState(() {});
-              },
-              icon: const Icon(Icons.refresh, color: mColor)),
-          IconButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: const Center(
-                      child: CustomText(
-                        'HELP',
-                        fontWeight: FontWeight.bold,
-                        size: 20,
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        appBar: CustomAppBar(
+          actions: [
+            IconButton(
+                onPressed: () async {
+                  _starsService.getStars();
+                  setState(() {});
+                },
+                icon: const Icon(Icons.refresh, color: mColor)),
+            IconButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Center(
+                        child: CustomText(
+                          'HELP',
+                          fontWeight: FontWeight.bold,
+                          size: 20,
+                        ),
                       ),
-                    ),
-                    content: Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Text(
-                              'You can swipe a starred article to remove it from the Star list.'),
-                          const SizedBox(height: 20),
-                          RichText(
-                              text: const TextSpan(children: [
-                            TextSpan(text: 'Click '),
-                            WidgetSpan(
-                              child: Icon(Icons.refresh, size: 14),
-                            ),
-                            TextSpan(
-                              text: " to get the latest updated list.",
-                            ),
-                          ]))
-                        ],
+                      content: Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Text(
+                                'You can swipe a starred article to remove it from the Star list.'),
+                            const SizedBox(height: 20),
+                            RichText(
+                                text: const TextSpan(children: [
+                              TextSpan(text: 'Click '),
+                              WidgetSpan(
+                                child: Icon(Icons.refresh, size: 14),
+                              ),
+                              TextSpan(
+                                text: " to get the latest updated list.",
+                              ),
+                            ]))
+                          ],
+                        ),
                       ),
+                      actions: [
+                        Center(
+                          child: CustomElevatedButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              text: 'OKAY'),
+                        )
+                      ],
                     ),
-                    actions: [
-                      Center(
-                        child: CustomElevatedButton(
-                            onPressed: () => Navigator.of(context).pop(),
-                            text: 'OKAY'),
+                  );
+                },
+                icon: const Icon(Icons.help, color: mColor))
+          ],
+        ),
+        drawer: const DrawerMenu(isLoggedIn: false),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CustomSearchBar(
+                controller: _search,
+                onChanged: (value) => setState(() {
+                  keyword = _search.text;
+                }),
+                suffixIcon: keyword.isEmpty
+                    ? const Icon(
+                        Icons.search,
+                        color: mColor,
                       )
-                    ],
-                  ),
-                );
-              },
-              icon: const Icon(Icons.help, color: mColor))
-        ],
-      ),
-      drawer: const DrawerMenu(isLoggedIn: false),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            CustomSearchBar(
-              controller: _search,
-              onChanged: (value) => setState(() {
-                keyword = _search.text;
-              }),
-              suffixIcon: keyword.isEmpty
-                  ? const Icon(
-                      Icons.search,
-                      color: mColor,
-                    )
-                  : IconButton(
-                      onPressed: () {
-                        setState(() {
-                          _search.clear();
-                          keyword = '';
-                        });
-                      },
-                      icon: const Icon(Icons.cancel),
-                      color: mColor,
-                    ),
-            ),
-            const SizedBox(height: 15),
-            StreamBuilder<Iterable<ArticleModel>>(
-                stream: _starsService.starsStream(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    if (snapshot.hasData) {
-                      if (snapshot.data!.isEmpty) {
-                        return const Center(
-                            child: Text('You have no starred articles yet.'));
-                      } else {
-                        results = snapshot.data!;
+                    : IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _search.clear();
+                            keyword = '';
+                          });
+                        },
+                        icon: const Icon(Icons.cancel),
+                        color: mColor,
+                      ),
+              ),
+              const SizedBox(height: 15),
+              StreamBuilder<Iterable<ArticleModel>>(
+                  stream: _starsService.starsStream(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.hasData) {
+                        if (snapshot.data!.isEmpty) {
+                          return const Center(
+                              child: Text('You have no starred articles yet.'));
+                        } else {
+                          results = snapshot.data!;
+                        }
                       }
-                    }
 
-                    if (keyword.isNotEmpty) {
-                      results = snapshot.data!.where((element) => element.title
-                          .toLowerCase()
-                          .contains(keyword.toLowerCase()));
-                    }
+                      if (keyword.isNotEmpty) {
+                        results = snapshot.data!.where((element) => element
+                            .title
+                            .toLowerCase()
+                            .contains(keyword.toLowerCase()));
+                      }
 
-                    if (keyword.isNotEmpty && results.isEmpty) {
-                      return const Text('No results found!');
-                    }
+                      if (keyword.isNotEmpty && results.isEmpty) {
+                        return const Text('No results found!');
+                      }
 
-                    return Flexible(
-                      child: ListView.builder(
-                        itemCount: results.length,
-                        itemBuilder: (context, index) {
-                          final id =
-                              results.elementAt(index).documentId.toString();
-                          return Dismissible(
-                              key: Key(id),
-                              direction: DismissDirection.endToStart,
-                              onDismissed: (direction) {
-                                _starsService.deleteStar(id);
-                                setState(() {});
-                              },
-                              background: Container(
-                                color: Colors.red,
-                                alignment: Alignment.centerRight,
-                                child: const Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 10),
-                                  child: Icon(
-                                    Icons.delete,
-                                    color: Colors.white,
-                                    size: 30,
+                      return Flexible(
+                        child: ListView.builder(
+                          itemCount: results.length,
+                          itemBuilder: (context, index) {
+                            final id =
+                                results.elementAt(index).documentId.toString();
+                            return Dismissible(
+                                key: Key(id),
+                                direction: DismissDirection.endToStart,
+                                onDismissed: (direction) {
+                                  _starsService.deleteStar(id);
+                                  setState(() {});
+                                },
+                                background: Container(
+                                  color: Colors.red,
+                                  alignment: Alignment.centerRight,
+                                  child: const Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10),
+                                    child: Icon(
+                                      Icons.delete,
+                                      color: Colors.white,
+                                      size: 30,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              child: StarCard(
-                                onTap: () async {
-                                  bool result = await AutoRouter.of(context)
-                                      .push(ArticleDetailsRoute(
-                                    article: results.elementAt(index),
-                                    isStarred: true,
-                                    isLoggedIn: false,
-                                  )) as bool;
-                                  if (result) {
-                                    setState(() {});
-                                  }
-                                },
-                                articleModel: results.elementAt(index),
-                              ));
-                        },
-                      ),
-                    );
-                  } else {
-                    return const CustomLoadingIcon();
-                  }
-                }),
-          ],
+                                child: StarCard(
+                                  onTap: () async {
+                                    bool result = await AutoRouter.of(context)
+                                        .push(ArticleDetailsRoute(
+                                      article: results.elementAt(index),
+                                      isStarred: true,
+                                      isLoggedIn: false,
+                                    )) as bool;
+                                    if (result) {
+                                      setState(() {});
+                                    }
+                                  },
+                                  articleModel: results.elementAt(index),
+                                ));
+                          },
+                        ),
+                      );
+                    } else {
+                      return const CustomLoadingIcon();
+                    }
+                  }),
+            ],
+          ),
         ),
       ),
     );

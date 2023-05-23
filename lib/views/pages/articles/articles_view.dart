@@ -71,98 +71,101 @@ class _ArticlesViewState extends State<ArticlesView> {
     final isLoggedIn =
         BlocProvider.of<AuthBloc>(context).state is AuthStateSignedIn;
 
-    return Scaffold(
-      appBar: CustomAppBar(
-        actions: [if (isLoggedIn) AddArticleButton(category: category)],
-      ),
-      body: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          //* Category title
-          SizedBox(
-              height: MediaQuery.of(context).size.height * 0.14,
-              child: HomeItem(categoryModel)),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-                //* Search bar
-                CustomSearchBar(
-                  controller: _search,
-                  onChanged: (value) => setState(() {
-                    _keyword = value;
-                  }),
-                  suffixIcon: _keyword.isNotEmpty
-                      ? IconButton(
-                          icon: const Icon(Icons.cancel, color: mColor),
-                          onPressed: () => setState(() {
-                            _search.clear();
-                            _keyword = '';
-                          }),
-                        )
-                      : const Icon(Icons.search, color: mColor),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        appBar: CustomAppBar(
+          actions: [if (isLoggedIn) AddArticleButton(category: category)],
+        ),
+        body: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            //* Category title
+            SizedBox(
+                height: MediaQuery.of(context).size.height * 0.14,
+                child: HomeItem(categoryModel)),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                  //* Search bar
+                  CustomSearchBar(
+                    controller: _search,
+                    onChanged: (value) => setState(() {
+                      _keyword = value;
+                    }),
+                    suffixIcon: _keyword.isNotEmpty
+                        ? IconButton(
+                            icon: const Icon(Icons.cancel, color: mColor),
+                            onPressed: () => setState(() {
+                              _search.clear();
+                              _keyword = '';
+                            }),
+                          )
+                        : const Icon(Icons.search, color: mColor),
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.01),
 
-                //* Stream to display a list of articles related to the chosen category
-                StreamBuilder<Iterable<ArticleModel>>(
-                  stream: stream,
-                  builder: (context, snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.waiting:
-                        return const Center(child: CustomLoadingIcon());
-                      case ConnectionState.active:
-                        if (snapshot.hasData) {
-                          if (snapshot.data!.isNotEmpty) {
-                            _results = snapshot.data!;
-                          } else {
-                            return const Center(
-                                child: Text(
-                                    'No article for this category at the moment.'));
+                  //* Stream to display a list of articles related to the chosen category
+                  StreamBuilder<Iterable<ArticleModel>>(
+                    stream: stream,
+                    builder: (context, snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.waiting:
+                          return const Center(child: CustomLoadingIcon());
+                        case ConnectionState.active:
+                          if (snapshot.hasData) {
+                            if (snapshot.data!.isNotEmpty) {
+                              _results = snapshot.data!;
+                            } else {
+                              return const Center(
+                                  child: Text(
+                                      'No article for this category at the moment.'));
+                            }
+                            if (_keyword.isNotEmpty) {
+                              _results = snapshot.data!.where((element) =>
+                                  element.title
+                                      .toLowerCase()
+                                      .contains(_keyword.toLowerCase()));
+                            }
+                            if (_keyword.isNotEmpty && _results.isEmpty) {
+                              return const Text('No results found!');
+                            }
                           }
-                          if (_keyword.isNotEmpty) {
-                            _results = snapshot.data!.where((element) => element
-                                .title
-                                .toLowerCase()
-                                .contains(_keyword.toLowerCase()));
-                          }
-                          if (_keyword.isNotEmpty && _results.isEmpty) {
-                            return const Text('No results found!');
-                          }
-                        }
 
-                        return Flexible(
-                          child: ScrollConfig(
-                            child: ListView.builder(
-                              physics: const BouncingScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: _results.length,
-                              itemBuilder: (context, index) {
-                                return ArticleCard(
-                                  isLoggedIn: isLoggedIn,
-                                  articleModel: _results.elementAt(index),
-                                );
-                              },
+                          return Flexible(
+                            child: ScrollConfig(
+                              child: ListView.builder(
+                                physics: const BouncingScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: _results.length,
+                                itemBuilder: (context, index) {
+                                  return ArticleCard(
+                                    isLoggedIn: isLoggedIn,
+                                    articleModel: _results.elementAt(index),
+                                  );
+                                },
+                              ),
                             ),
-                          ),
-                        );
+                          );
 
-                      default:
-                        return const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CustomLoadingIcon(),
-                          ],
-                        );
-                    }
-                  },
-                ),
-              ],
-            ),
-          )
-        ],
+                        default:
+                          return const Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CustomLoadingIcon(),
+                            ],
+                          );
+                      }
+                    },
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
