@@ -1,6 +1,6 @@
-# Vaasa Student Guide
+# 🧳 Vaasa Student Guide 🧳
 
-## Tour Guiding App For New Students at Vaasa
+## 🤓 Tour Guiding App For New Students at Vaasa
 
 New students might feel uncomfortable when arriving in a new city, or new environment. This has happened to many students especially international students so this is the reason why this project has been started. Students might not have any acquaintances living in Finland and there may be a lot of questions unsolved or it might take time to get used to a peaceful but freezing country. This application provides information of places or websites in Vaasa that the users can rent a student apartment, eat out, play their favorites sports, find new friends, new job opportunities and so on.
 
