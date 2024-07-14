@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:students_guide/models/category_model.dart';
@@ -12,6 +13,7 @@ import 'package:students_guide/views/widgets/drawer.dart';
 import 'package:students_guide/views/widgets/home/home_item.dart';
 import 'package:upgrader/upgrader.dart';
 
+@RoutePage()
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
   @override
@@ -26,10 +28,9 @@ class _HomeViewState extends State<HomeView> {
       () async => await requestLocationPermission(context),
     );
     return UpgradeAlert(
-      upgrader: Upgrader(
-          dialogStyle: Platform.isAndroid
-              ? UpgradeDialogStyle.material
-              : UpgradeDialogStyle.cupertino),
+      dialogStyle: Platform.isAndroid
+          ? UpgradeDialogStyle.material
+          : UpgradeDialogStyle.cupertino,
       child: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
           if (state is AuthStateUninitialized) {
@@ -50,6 +51,7 @@ class _HomeViewState extends State<HomeView> {
                 Flexible(
                   child: ScrollConfig(
                     child: ListView.builder(
+                      physics: const BouncingScrollPhysics(),
                       itemExtent: MediaQuery.of(context).size.height * 0.14,
                       itemCount: categoryList.length,
                       itemBuilder: (BuildContext context, int index) {

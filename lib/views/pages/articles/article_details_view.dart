@@ -23,6 +23,7 @@ import 'package:students_guide/views/widgets/articles/details/details_container.
 import 'package:students_guide/views/widgets/articles/details/details_text.dart';
 import 'package:students_guide/views/widgets/articles/stars/star_button.dart';
 
+@RoutePage()
 class ArticleDetailsView extends StatefulWidget {
   final ArticleModel article;
   final bool isStarred;

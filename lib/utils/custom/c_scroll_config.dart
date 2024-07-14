@@ -15,9 +15,9 @@ class NoGlowScrollBehavior extends ScrollBehavior {
 class ScrollConfig extends StatelessWidget {
   final Widget child;
   const ScrollConfig({
-    Key? key,
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:students_guide/services/email/send_email.dart';
@@ -14,6 +15,7 @@ import 'package:students_guide/utils/custom/word_limit_text_formatter.dart';
 import 'package:students_guide/utils/extensions/string_extension.dart';
 import 'package:students_guide/views/widgets/drawer.dart';
 
+@RoutePage()
 class ContactView extends StatefulWidget {
   const ContactView({Key? key}) : super(key: key);
 

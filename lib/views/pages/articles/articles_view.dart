@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:students_guide/models/article_model.dart';
@@ -17,6 +18,7 @@ import 'package:students_guide/views/widgets/articles/view_all/article_card.dart
 import 'package:students_guide/utils/custom/c_search_bar.dart';
 import 'package:students_guide/views/widgets/home/home_item.dart';
 
+@RoutePage()
 class ArticlesView extends StatefulWidget {
   final CategoryModel categoryModel;
 

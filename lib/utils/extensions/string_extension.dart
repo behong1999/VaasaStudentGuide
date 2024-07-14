@@ -1,7 +1,7 @@
 extension StringExtension on String {
   String toCamelCase() {
-    return replaceAllMapped(
-            RegExp(r'(?<=[a-z])[A-Z]'), (match) => match[0]!.toLowerCase())
+    return replaceAllMapped(RegExp(r'(?<=[a-z])[A-Z]'),
+            (match) => (match[0] ?? '').toLowerCase())
         .replaceAll(RegExp(r'\W|_'), ' ')
         .trim()
         .split(' ')

@@ -18,6 +18,7 @@ import 'package:students_guide/views/widgets/drawer.dart';
 final StarsService _starsService = StarsService();
 final CloudService _cloudService = CloudService();
 
+@RoutePage()
 class StarsView extends StatefulWidget {
   const StarsView({Key? key}) : super(key: key);
 

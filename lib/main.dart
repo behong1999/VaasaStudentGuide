@@ -12,8 +12,8 @@ import 'package:students_guide/services/auth/bloc/auth_bloc.dart';
 import 'package:students_guide/services/theme/cubit/theme_cubit.dart';
 import 'package:students_guide/utils/constants.dart' as constants;
 import 'package:students_guide/utils/custom/c_bloc_observer.dart';
-import 'package:students_guide/utils/routes/router.gr.dart';
 import 'package:students_guide/utils/custom/c_theme_data.dart';
+import 'package:students_guide/utils/routes/router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,11 +32,23 @@ void main() async {
       .then((value) => runApp(StudentGuideApp(showHome)));
 }
 
-class StudentGuideApp extends StatelessWidget {
+class StudentGuideApp extends StatefulWidget {
   final bool showHome;
-  StudentGuideApp(this.showHome, {super.key});
 
-  final _appRouter = AppRouter();
+  const StudentGuideApp(this.showHome, {super.key});
+
+  @override
+  State<StudentGuideApp> createState() => _StudentGuideAppState();
+}
+
+class _StudentGuideAppState extends State<StudentGuideApp> {
+  late final AppRouter _appRouter;
+
+  @override
+  void initState() {
+    super.initState();
+    _appRouter = AppRouter(showHome: widget.showHome);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,18 +60,16 @@ class StudentGuideApp extends StatelessWidget {
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (BuildContext context, ThemeState state) {
           return PlatformApp.router(
-              debugShowCheckedModeBanner: false,
-              title: 'Student Guide App',
-              material: (context, _) => MaterialAppRouterData(
-                    theme: lightTheme(context),
-                    darkTheme: darkTheme(context),
-                    themeMode:
-                        BlocProvider.of<ThemeCubit>(context).state.themeMode,
-                  ),
-              routerDelegate: _appRouter.delegate(initialRoutes: [
-                showHome ? const HomeRoute() : const OnboardingRoute()
-              ]),
-              routeInformationParser: _appRouter.defaultRouteParser());
+            debugShowCheckedModeBanner: false,
+            title: 'Student Guide App',
+            material: (context, _) => MaterialAppRouterData(
+              theme: lightTheme(context),
+              darkTheme: darkTheme(context),
+              themeMode: BlocProvider.of<ThemeCubit>(context).state.themeMode,
+            ),
+            routerDelegate: _appRouter.delegate(),
+            routeInformationParser: _appRouter.defaultRouteParser(),
+          );
         },
       ),
     );

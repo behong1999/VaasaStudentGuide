@@ -28,6 +28,7 @@ final List<Map<String, String>> onboardings = [
   }
 ];
 
+@RoutePage()
 class OnboardingView extends StatefulWidget {
   const OnboardingView({Key? key}) : super(key: key);
 

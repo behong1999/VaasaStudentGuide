@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:students_guide/gen/assets.gen.dart';
 import 'package:students_guide/services/auth/auth_exception.dart';
 import 'package:students_guide/services/auth/bloc/auth_bloc.dart';
@@ -14,8 +13,9 @@ import 'package:students_guide/utils/dialogs/error_dialog.dart';
 import 'package:students_guide/utils/dialogs/reset_password_dialog.dart';
 import 'package:students_guide/utils/routes/router.gr.dart';
 
+@RoutePage()
 class LoginView extends StatefulWidget {
-  const LoginView({Key? key}) : super(key: key);
+  const LoginView({super.key});
 
   @override
   State<LoginView> createState() => _LoginViewState();
@@ -30,7 +30,7 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(),
+      appBar: const CustomAppBar(),
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.only(

@@ -18,6 +18,7 @@ import 'package:students_guide/utils/routes/router.gr.dart';
 //* If article is passed, update the passed article
 //* If neither of them is passed, add new article
 
+@RoutePage()
 class AddEditView extends StatefulWidget {
   final String? category;
   final ArticleModel? article;
