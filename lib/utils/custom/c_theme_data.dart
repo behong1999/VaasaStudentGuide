@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:students_guide/services/theme/cubit/theme_cubit.dart';
+import 'package:students_guide/cubit/theme_cubit.dart';
 
 const white = Colors.white;
 const black = Colors.black;

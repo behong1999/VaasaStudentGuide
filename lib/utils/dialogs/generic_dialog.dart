@@ -20,10 +20,10 @@ Future<T?> showGenericDialog<T>({
           final T value = options[key];
           return ElevatedButton(
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(
+                backgroundColor: WidgetStateProperty.all<Color>(
                     value != null ? mColor : grey),
-                foregroundColor: MaterialStateProperty.all<Color>(white),
-                shape: MaterialStateProperty.all(
+                foregroundColor: WidgetStateProperty.all<Color>(white),
+                shape: WidgetStateProperty.all(
                   RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
                 ),

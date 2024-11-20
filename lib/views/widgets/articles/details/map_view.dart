@@ -20,7 +20,7 @@ import 'package:students_guide/services/url_launcher.dart';
 class MapView extends StatefulWidget {
   final String address;
 
-  const MapView({Key? key, required this.address}) : super(key: key);
+  const MapView({super.key, required this.address});
 
   @override
   MapViewState createState() => MapViewState();
@@ -78,10 +78,10 @@ class MapViewState extends State<MapView> {
     final Uint8List markerIcon =
         await getBytesFromAsset(Assets.images.locationIcon.path, 120, 120);
 
-    currentIcon = BitmapDescriptor.fromBytes(markerIcon);
+    currentIcon = BitmapDescriptor.bytes(markerIcon);
   }
 
-  setPolylines() async {
+  setMarkers() async {
     //* Add markers to the map
     markers.add(Marker(
       markerId: const MarkerId('current location'),
@@ -89,12 +89,14 @@ class MapViewState extends State<MapView> {
       position: currentLocation,
       infoWindow: InfoWindow(title: 'current location'.toCamelCase()),
     ));
-    markers.add(Marker(
-      markerId: const MarkerId('destination'),
-      icon: BitmapDescriptor.defaultMarker,
-      position: destination,
-      infoWindow: InfoWindow(title: widget.address),
-    ));
+    markers.add(
+      Marker(
+        markerId: const MarkerId('destination'),
+        icon: BitmapDescriptor.defaultMarker,
+        position: destination,
+        infoWindow: InfoWindow(title: widget.address),
+      ),
+    );
 
     //* Draw a polyline between the current location and the destination
     polylineCoordinates = await getPolylineCoordinates(
@@ -138,7 +140,7 @@ class MapViewState extends State<MapView> {
         //* Get latitude and longitude of the destination
         destination = await getLatLngFromAddress(widget.address);
         await setCustomIcon();
-        await setPolylines();
+        await setMarkers();
       }
     } catch (e) {
       print(e);

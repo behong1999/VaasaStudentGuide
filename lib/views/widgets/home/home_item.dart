@@ -9,8 +9,8 @@ class HomeItem extends StatelessWidget {
   final CategoryModel categoryModel;
   const HomeItem(
     this.categoryModel, {
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

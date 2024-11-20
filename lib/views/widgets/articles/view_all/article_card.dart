@@ -14,10 +14,10 @@ class ArticleCard extends StatefulWidget {
   final bool isLoggedIn;
   final ArticleModel articleModel;
   const ArticleCard({
-    Key? key,
+    super.key,
     required this.isLoggedIn,
     required this.articleModel,
-  }) : super(key: key);
+  });
 
   @override
   State<ArticleCard> createState() => _ArticleCardState();

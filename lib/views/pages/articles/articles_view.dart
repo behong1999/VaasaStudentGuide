@@ -7,7 +7,7 @@ import 'package:students_guide/models/article_model.dart';
 
 import 'package:students_guide/models/category_model.dart';
 import 'package:students_guide/services/articles/cloud_service.dart';
-import 'package:students_guide/services/auth/bloc/auth_bloc.dart';
+import 'package:students_guide/bloc/auth_bloc.dart';
 import 'package:students_guide/services/stars/stars_service.dart';
 import 'package:students_guide/utils/custom/c_app_bar.dart';
 import 'package:students_guide/utils/custom/c_loading_icon.dart';

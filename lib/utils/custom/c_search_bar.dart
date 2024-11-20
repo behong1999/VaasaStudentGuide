@@ -7,11 +7,11 @@ class CustomSearchBar extends StatefulWidget {
   final Widget? suffixIcon;
 
   const CustomSearchBar({
-    Key? key,
+    super.key,
     required this.controller,
     required this.onChanged,
     this.suffixIcon,
-  }) : super(key: key);
+  });
 
   @override
   State<CustomSearchBar> createState() => _CustomSearchBarState();

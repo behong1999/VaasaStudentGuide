@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:students_guide/gen/assets.gen.dart';
 import 'package:students_guide/services/auth/auth_exception.dart';
-import 'package:students_guide/services/auth/bloc/auth_bloc.dart';
+import 'package:students_guide/bloc/auth_bloc.dart';
 import 'package:students_guide/utils/custom/c_app_bar.dart';
 import 'package:students_guide/utils/custom/c_elevated_button.dart';
 import 'package:students_guide/utils/custom/c_loading_icon.dart';

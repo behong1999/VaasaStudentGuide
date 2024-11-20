@@ -12,13 +12,13 @@ class DetailsText extends StatelessWidget {
   final Widget? suffixIcon;
 
   const DetailsText({
-    Key? key,
+    super.key,
     required this.title,
     this.content,
     this.style,
     this.onTap,
     this.suffixIcon,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

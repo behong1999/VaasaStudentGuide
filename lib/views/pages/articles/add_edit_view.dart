@@ -24,10 +24,10 @@ class AddEditView extends StatefulWidget {
   final ArticleModel? article;
 
   const AddEditView({
-    Key? key,
+    super.key,
     this.category,
     this.article,
-  }) : super(key: key);
+  });
 
   @override
   State<AddEditView> createState() => _AddEditViewState();

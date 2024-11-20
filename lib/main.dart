@@ -8,10 +8,10 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:students_guide/firebase_options.dart';
 import 'package:students_guide/services/auth/auth_repository_impl.dart';
-import 'package:students_guide/services/auth/bloc/auth_bloc.dart';
-import 'package:students_guide/services/theme/cubit/theme_cubit.dart';
+import 'package:students_guide/bloc/auth_bloc.dart';
+import 'package:students_guide/cubit/theme_cubit.dart';
 import 'package:students_guide/utils/constants.dart' as constants;
-import 'package:students_guide/utils/custom/c_bloc_observer.dart';
+import 'package:students_guide/utils/bloc_observer.dart';
 import 'package:students_guide/utils/custom/c_theme_data.dart';
 import 'package:students_guide/utils/routes/router.dart';
 

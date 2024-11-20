@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:students_guide/services/email/send_email.dart';
-import 'package:students_guide/services/theme/cubit/theme_cubit.dart';
+import 'package:students_guide/cubit/theme_cubit.dart';
 
 import 'package:students_guide/utils/custom/c_app_bar.dart';
 import 'package:students_guide/utils/custom/c_elevated_button.dart';
@@ -17,7 +17,7 @@ import 'package:students_guide/views/widgets/drawer.dart';
 
 @RoutePage()
 class ContactView extends StatefulWidget {
-  const ContactView({Key? key}) : super(key: key);
+  const ContactView({super.key});
 
   @override
   State<ContactView> createState() => _ContactViewState();
@@ -147,11 +147,11 @@ class _ContactViewState extends State<ContactView> {
 
 class MessageTextField extends StatelessWidget {
   const MessageTextField({
-    Key? key,
+    super.key,
     required this.wordLimit,
     required this.message,
     required this.onChanged,
-  }) : super(key: key);
+  });
 
   final int wordLimit;
   final TextEditingController message;

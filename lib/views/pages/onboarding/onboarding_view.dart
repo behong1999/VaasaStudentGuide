@@ -30,7 +30,7 @@ final List<Map<String, String>> onboardings = [
 
 @RoutePage()
 class OnboardingView extends StatefulWidget {
-  const OnboardingView({Key? key}) : super(key: key);
+  const OnboardingView({super.key});
 
   @override
   State<OnboardingView> createState() => _OnboardingViewState();

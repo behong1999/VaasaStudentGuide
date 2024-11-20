@@ -4,7 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:students_guide/models/category_model.dart';
-import 'package:students_guide/services/auth/bloc/auth_bloc.dart';
+import 'package:students_guide/bloc/auth_bloc.dart';
 import 'package:students_guide/utils/custom/c_text.dart';
 import 'package:students_guide/utils/custom/c_app_bar.dart';
 import 'package:students_guide/utils/custom/c_scroll_config.dart';

@@ -5,8 +5,8 @@ import 'package:mockito/mockito.dart';
 import 'package:students_guide/models/admin_model.dart';
 import 'package:students_guide/services/auth/auth_exception.dart';
 import 'package:students_guide/services/auth/auth_repository.dart';
-import 'package:students_guide/services/auth/bloc/auth_bloc.dart';
-import 'package:students_guide/services/theme/cubit/theme_cubit.dart';
+import 'package:students_guide/bloc/auth_bloc.dart';
+import 'package:students_guide/cubit/theme_cubit.dart';
 import 'package:students_guide/utils/extensions/string_extension.dart';
 
 const _testEmail = "test@gmail.com";

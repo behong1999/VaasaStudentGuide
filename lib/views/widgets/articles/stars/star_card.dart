@@ -8,10 +8,10 @@ import 'package:students_guide/utils/custom/c_text.dart';
 
 class StarCard extends StatefulWidget {
   const StarCard({
-    Key? key,
+    super.key,
     required this.articleModel,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   final ArticleModel articleModel;
   final VoidCallback onTap;

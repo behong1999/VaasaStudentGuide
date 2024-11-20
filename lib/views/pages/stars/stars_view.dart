@@ -20,7 +20,7 @@ final CloudService _cloudService = CloudService();
 
 @RoutePage()
 class StarsView extends StatefulWidget {
-  const StarsView({Key? key}) : super(key: key);
+  const StarsView({super.key});
 
   @override
   State<StarsView> createState() => _StarsViewState();

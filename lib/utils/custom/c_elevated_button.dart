@@ -6,18 +6,18 @@ class CustomElevatedButton extends StatelessWidget {
   final String text;
 
   const CustomElevatedButton({
-    Key? key,
+    super.key,
     required this.onPressed,
     required this.text,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(mColor),
-        foregroundColor: MaterialStateProperty.all<Color>(white),
-        shape: MaterialStateProperty.all(
+        backgroundColor: WidgetStateProperty.all<Color>(mColor),
+        foregroundColor: WidgetStateProperty.all<Color>(white),
+        shape: WidgetStateProperty.all(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
       ),
       onPressed: onPressed,

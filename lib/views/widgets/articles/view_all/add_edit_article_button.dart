@@ -32,10 +32,10 @@ class AddArticleButton extends StatelessWidget {
           onPressed: () =>
               AutoRouter.of(context).push(AddEditRoute(category: category)),
           style: ButtonStyle(
-            padding: MaterialStateProperty.all(
+            padding: WidgetStateProperty.all(
                 const EdgeInsets.symmetric(horizontal: 5)),
-            backgroundColor: MaterialStateProperty.all<Color>(mColor),
-            foregroundColor: MaterialStateProperty.all<Color>(white),
+            backgroundColor: WidgetStateProperty.all<Color>(mColor),
+            foregroundColor: WidgetStateProperty.all<Color>(white),
           ),
           child: const Icon(
             Icons.add,

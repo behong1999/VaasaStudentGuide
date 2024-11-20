@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:students_guide/services/auth/auth_exception.dart';
-import 'package:students_guide/services/auth/bloc/auth_bloc.dart';
+import 'package:students_guide/bloc/auth_bloc.dart';
 import 'package:students_guide/utils/custom/c_loading_icon.dart';
 import 'package:students_guide/utils/custom/c_text_form_field.dart';
 import 'package:students_guide/utils/custom/c_theme_data.dart';
@@ -69,9 +69,9 @@ showResetPasswordDialog(BuildContext context) {
                 ? const CustomLoadingIcon()
                 : ElevatedButton(
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(mColor),
-                      foregroundColor: MaterialStateProperty.all<Color>(white),
-                      shape: MaterialStateProperty.all(
+                      backgroundColor: WidgetStateProperty.all<Color>(mColor),
+                      foregroundColor: WidgetStateProperty.all<Color>(white),
+                      shape: WidgetStateProperty.all(
                         RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20)),
                       ),
@@ -93,9 +93,9 @@ showResetPasswordDialog(BuildContext context) {
           ),
           ElevatedButton(
               style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all<Color>(white),
-                backgroundColor: MaterialStateProperty.all<Color>(grey),
-                shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                foregroundColor: WidgetStateProperty.all<Color>(white),
+                backgroundColor: WidgetStateProperty.all<Color>(grey),
+                shape: WidgetStateProperty.all(RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20))),
               ),
               onPressed: () => Navigator.of(context).pop(),

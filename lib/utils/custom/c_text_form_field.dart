@@ -17,7 +17,7 @@ class CustomTextFormField extends StatelessWidget {
   Widget? prefixIcon;
 
   CustomTextFormField({
-    Key? key,
+    super.key,
     required this.controller,
     this.radius,
     this.maxLines,
@@ -28,7 +28,7 @@ class CustomTextFormField extends StatelessWidget {
     this.inputType,
     this.hint,
     this.label,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

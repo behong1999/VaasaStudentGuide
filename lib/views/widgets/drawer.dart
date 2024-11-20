@@ -4,8 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:students_guide/services/auth/bloc/auth_bloc.dart';
-import 'package:students_guide/services/theme/cubit/theme_cubit.dart';
+import 'package:students_guide/bloc/auth_bloc.dart';
+import 'package:students_guide/cubit/theme_cubit.dart';
 import 'package:students_guide/utils/custom/c_scroll_config.dart';
 import 'package:students_guide/utils/dialogs/sign_out_dialog.dart';
 import 'package:students_guide/utils/enums.dart';
@@ -17,9 +17,9 @@ import 'package:students_guide/views/widgets/drawer_item.dart';
 
 class DrawerMenu extends StatefulWidget {
   const DrawerMenu({
-    Key? key,
+    super.key,
     required this.isLoggedIn,
-  }) : super(key: key);
+  });
 
   final bool isLoggedIn;
 
@@ -42,7 +42,8 @@ class _DrawerMenuState extends State<DrawerMenu> {
                   child: ListView(
                     children: [
                       SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.25,
+                        // NOTE: 
+                        height: MediaQuery.of(context).size.height * 0.3, 
                         child: DrawerHeader(
                           padding: const EdgeInsets.all(15),
                           decoration: const BoxDecoration(color: mColor),

@@ -29,11 +29,11 @@ class ArticleDetailsView extends StatefulWidget {
   final bool isStarred;
   final bool isLoggedIn;
   const ArticleDetailsView({
-    Key? key,
+    super.key,
     required this.article,
     required this.isStarred,
     required this.isLoggedIn,
-  }) : super(key: key);
+  });
 
   @override
   State<ArticleDetailsView> createState() => _ArticleDetailsViewState();
@@ -122,7 +122,7 @@ class _ArticleDetailsViewState extends State<ArticleDetailsView> {
     bool isLight = checkIfLightTheme(context);
 
     //* Height and width of the screen
-    double mediaHeight = MediaQuery.of(context).size.height;
+    double mediaHeight = MediaQuery.sizeOf(context).height;
     double hBetween = mediaHeight * 0.01;
 
     //* Pop up options for admins
